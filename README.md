@@ -1,5 +1,7 @@
 # Studio Pulse Demo
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/chippleh1392/studio-pulse-demo)
+
 Studio Pulse Demo is a public, static portfolio version of a larger internal YouTube analytics application. It preserves the product shape of the original tool, but runs entirely from synthetic JSON payloads so it can be shared publicly without exposing private channel data, workflows, or operational tooling.
 
 The app is designed to feel like a real analytics workspace rather than a generic dashboard mock. It includes dashboard monitoring, video-level diagnosis, metadata review, breakout candidate scoring, creative pattern analysis, cross-channel insights, and a technical analysis workspace.
