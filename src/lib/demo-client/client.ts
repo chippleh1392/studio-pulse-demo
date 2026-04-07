@@ -1,7 +1,11 @@
 import type {
   AppShellData,
+  BreakoutData,
+  CreativeData,
   DashboardData,
   GrowthData,
+  InsightsData,
+  MetadataData,
   TechnicalAnalysisData,
   VideosData,
 } from '@/lib/demo-client/types'
@@ -36,4 +40,20 @@ export function getGrowthData() {
 
 export function getTechnicalAnalysisData() {
   return loadJson<TechnicalAnalysisData>('/demo-data/technical-analysis.json')
+}
+
+export function getMetadataData() {
+  return loadJson<MetadataData>('/demo-data/metadata.json')
+}
+
+export function getBreakoutData() {
+  return loadJson<BreakoutData>('/demo-data/breakout.json')
+}
+
+export function getCreativeData() {
+  return loadJson<CreativeData>('/demo-data/creative.json')
+}
+
+export function getInsightsData() {
+  return loadJson<InsightsData>('/demo-data/insights.json')
 }

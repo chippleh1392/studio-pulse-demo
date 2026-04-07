@@ -1,0 +1,104 @@
+{
+  "thresholds": {
+    "minViews": 1000,
+    "maxViews": 30000,
+    "breakoutThreshold": 30000,
+    "breakoutMaxAgeDays": 45,
+    "resurgenceMinAgeDays": 90,
+    "resurgenceRecentDays": 7,
+    "resurgenceBaselineDays": 28,
+    "resurgenceMinRecentViews": 5000,
+    "resurgenceMinSurgeFactor": 1.8
+  },
+  "candidates": [
+    {
+      "videoId": "vid_003",
+      "title": "Soft Lantern Piano for Deep Work",
+      "views": 118400,
+      "daysSincePublish": 32,
+      "viewsPerDay": 3700,
+      "ctr": 5.9,
+      "avp": 37.6,
+      "breakoutScore": 78,
+      "topSignal": "High Retention",
+      "reasoning": "Watch depth is outperforming the recent baseline and the package still has room to scale through broader recommendation surfaces.",
+      "signals": {
+        "ctrSignal": 63,
+        "avpSignal": 82,
+        "velocitySignal": 71,
+        "suggestedTrafficSignal": 68,
+        "engagementSignal": 58
+      }
+    },
+    {
+      "videoId": "vid_004",
+      "title": "Afterglow Journaling Mix",
+      "views": 104900,
+      "daysSincePublish": 45,
+      "viewsPerDay": 2331,
+      "ctr": 5.3,
+      "avp": 34.1,
+      "breakoutScore": 65,
+      "topSignal": "Strong CTR",
+      "reasoning": "The package is still converting above median and looks like a candidate for a stronger adjacent theme test.",
+      "signals": {
+        "ctrSignal": 72,
+        "avpSignal": 61,
+        "velocitySignal": 54,
+        "suggestedTrafficSignal": 59,
+        "engagementSignal": 49
+      }
+    },
+    {
+      "videoId": "vid_006",
+      "title": "Golden Hour Writing Atmosphere",
+      "views": 88300,
+      "daysSincePublish": 67,
+      "viewsPerDay": 1318,
+      "ctr": 4.9,
+      "avp": 31.7,
+      "breakoutScore": 51,
+      "topSignal": "Algorithm Boost",
+      "reasoning": "This concept is weaker overall, but its recommendation pickup implies the packaging system can be reused on a stronger theme.",
+      "signals": {
+        "ctrSignal": 48,
+        "avpSignal": 45,
+        "velocitySignal": 43,
+        "suggestedTrafficSignal": 69,
+        "engagementSignal": 40
+      }
+    }
+  ],
+  "resurgences": [
+    {
+      "videoId": "vid_007",
+      "title": "Lantern Library: Volume Two",
+      "views": 96600,
+      "daysSincePublish": 82,
+      "recentViews": 14300,
+      "priorViews": 41200,
+      "recentViewsPerDay": 2042.9,
+      "priorViewsPerDay": 1471.4,
+      "surgeFactor": 1.39,
+      "surgeScore": 57,
+      "ctr": 5.1,
+      "avp": 33.5,
+      "reasoning": "Catalog interest has picked up again after the newer library-adjacent packages revalidated the theme."
+    },
+    {
+      "videoId": "vid_008",
+      "title": "Dawn Sketchbook Background Loop",
+      "views": 74200,
+      "daysSincePublish": 93,
+      "recentViews": 9800,
+      "priorViews": 22600,
+      "recentViewsPerDay": 1400.0,
+      "priorViewsPerDay": 807.1,
+      "surgeFactor": 1.73,
+      "surgeScore": 61,
+      "ctr": 4.5,
+      "avp": 29.4,
+      "reasoning": "A weaker archive concept is resurfacing, which suggests audience demand for lighter morning packages is broader than expected."
+    }
+  ]
+}

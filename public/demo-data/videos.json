@@ -6,11 +6,17 @@
       "publishedAt": "2026-03-28",
       "views": 148200,
       "watchHours": 102400,
+      "impressions": 2315000,
       "ctr": 6.4,
-      "avdMinutes": 38.2,
+      "avdSeconds": 2292,
+      "avp": 41.2,
       "format": "Long-form session",
       "theme": "Night focus",
-      "score": 92
+      "score": 92,
+      "tier": "Excellent",
+      "isLive": false,
+      "thumbnailLabel": "Midnight focus",
+      "summary": "Strongest recent focus-session package with high click intent and above-baseline watch depth."
     },
     {
       "id": "vid_002",
@@ -18,11 +24,17 @@
       "publishedAt": "2026-03-17",
       "views": 131800,
       "watchHours": 91300,
+      "impressions": 2140000,
       "ctr": 6.1,
-      "avdMinutes": 36.6,
+      "avdSeconds": 2196,
+      "avp": 39.8,
       "format": "Long-form session",
       "theme": "Study ambience",
-      "score": 89
+      "score": 89,
+      "tier": "Excellent",
+      "isLive": false,
+      "thumbnailLabel": "Rain study",
+      "summary": "Reliable study-format performer that converts well when the visual system stays tight."
     },
     {
       "id": "vid_003",
@@ -30,11 +42,17 @@
       "publishedAt": "2026-03-05",
       "views": 118400,
       "watchHours": 85100,
+      "impressions": 2058000,
       "ctr": 5.9,
-      "avdMinutes": 34.8,
+      "avdSeconds": 2088,
+      "avp": 37.6,
       "format": "Instrumental loop",
       "theme": "Deep work",
-      "score": 84
+      "score": 84,
+      "tier": "Good",
+      "isLive": false,
+      "thumbnailLabel": "Lantern piano",
+      "summary": "Musical packaging broadens appeal but still trails the best sleep and study-led concepts."
     },
     {
       "id": "vid_004",
@@ -42,11 +60,17 @@
       "publishedAt": "2026-02-20",
       "views": 104900,
       "watchHours": 69900,
+      "impressions": 1985000,
       "ctr": 5.3,
-      "avdMinutes": 31.1,
+      "avdSeconds": 1866,
+      "avp": 34.1,
       "format": "Mood playlist",
       "theme": "Reflection",
-      "score": 77
+      "score": 77,
+      "tier": "Good",
+      "isLive": false,
+      "thumbnailLabel": "Afterglow",
+      "summary": "Stable retention, softer click performance. Good support format but not the main growth engine."
     },
     {
       "id": "vid_005",
@@ -54,11 +78,17 @@
       "publishedAt": "2026-02-11",
       "views": 161500,
       "watchHours": 124600,
+      "impressions": 2436000,
       "ctr": 6.8,
-      "avdMinutes": 42.9,
+      "avdSeconds": 2574,
+      "avp": 44.5,
       "format": "Sleep soundscape",
       "theme": "Sleep",
-      "score": 95
+      "score": 95,
+      "tier": "Excellent",
+      "isLive": false,
+      "thumbnailLabel": "Harbor sleep",
+      "summary": "Top sleep-led package in the synthetic sample with breakout-level watch depth and click-through."
     },
     {
       "id": "vid_006",
@@ -66,11 +96,17 @@
       "publishedAt": "2026-01-29",
       "views": 88300,
       "watchHours": 59200,
+      "impressions": 1820000,
       "ctr": 4.9,
-      "avdMinutes": 28.4,
+      "avdSeconds": 1704,
+      "avp": 31.7,
       "format": "Writing ambience",
       "theme": "Creative flow",
-      "score": 72
+      "score": 72,
+      "tier": "Average",
+      "isLive": false,
+      "thumbnailLabel": "Golden hour",
+      "summary": "Creative-flow angle underperforms the clearer sleep and study utility packages."
     },
     {
       "id": "vid_007",
@@ -78,11 +114,17 @@
       "publishedAt": "2026-01-14",
       "views": 96600,
       "watchHours": 67300,
+      "impressions": 1894000,
       "ctr": 5.1,
-      "avdMinutes": 29.7,
+      "avdSeconds": 1782,
+      "avp": 33.5,
       "format": "Long-form session",
       "theme": "Library ambience",
-      "score": 74
+      "score": 74,
+      "tier": "Average",
+      "isLive": false,
+      "thumbnailLabel": "Library",
+      "summary": "Healthy floor performance, but the package is less legible than the winning concepts."
     },
     {
       "id": "vid_008",
@@ -90,11 +132,17 @@
       "publishedAt": "2026-01-03",
       "views": 74200,
       "watchHours": 48800,
+      "impressions": 1716000,
       "ctr": 4.5,
-      "avdMinutes": 26.2,
+      "avdSeconds": 1572,
+      "avp": 29.4,
       "format": "Creative ambience",
       "theme": "Morning routine",
-      "score": 68
+      "score": 68,
+      "tier": "Poor",
+      "isLive": false,
+      "thumbnailLabel": "Sketchbook",
+      "summary": "Useful lower-bound example showing what happens when the packaging signal gets too soft."
     }
   ],
   "summary": {

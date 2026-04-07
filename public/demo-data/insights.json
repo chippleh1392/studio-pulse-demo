@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "trafficDiversityIndex": 74,
+    "trafficSourceCount": 6,
+    "subscriberRetentionAdvantage": 18,
+    "geographicCountryCount": 42,
+    "topCountryPercentage": 28
+  },
+  "trafficSources": [
+    { "sourceName": "Browse Features", "percentage": 31.4, "totalViews": 402800, "color": "bg-blue-500" },
+    { "sourceName": "Suggested Video", "percentage": 24.8, "totalViews": 318500, "color": "bg-purple-500" },
+    { "sourceName": "YouTube Search", "percentage": 18.2, "totalViews": 233600, "color": "bg-green-500" },
+    { "sourceName": "External", "percentage": 10.6, "totalViews": 135900, "color": "bg-orange-500" },
+    { "sourceName": "Channel Pages", "percentage": 8.7, "totalViews": 111500, "color": "bg-slate-500" },
+    { "sourceName": "Other", "percentage": 6.3, "totalViews": 80800, "color": "bg-gray-500" }
+  ],
+  "devices": [
+    { "deviceName": "Mobile", "percentage": 52.1, "totalViews": 668400, "color": "bg-blue-500" },
+    { "deviceName": "TV", "percentage": 21.7, "totalViews": 278200, "color": "bg-purple-500" },
+    { "deviceName": "Desktop", "percentage": 17.9, "totalViews": 229400, "color": "bg-green-500" },
+    { "deviceName": "Tablet", "percentage": 8.3, "totalViews": 106300, "color": "bg-orange-500" }
+  ],
+  "subscriberComparison": {
+    "subscriberViews": 318400,
+    "subscriberAvgViewDurationSeconds": 2478,
+    "nonSubscriberViews": 965900,
+    "nonSubscriberAvgViewDurationSeconds": 2103,
+    "subscriberViewPercentage": 24.8,
+    "summary": "Subscribers keep a meaningful retention advantage, but most reach still comes from non-subscribers entering through recommendation surfaces."
+  },
+  "countries": [
+    { "countryName": "United States", "percentage": 28.0, "totalViews": 359600 },
+    { "countryName": "United Kingdom", "percentage": 11.4, "totalViews": 146400 },
+    { "countryName": "Canada", "percentage": 8.8, "totalViews": 113000 },
+    { "countryName": "Australia", "percentage": 6.9, "totalViews": 88600 },
+    { "countryName": "Germany", "percentage": 5.7, "totalViews": 73200 },
+    { "countryName": "Netherlands", "percentage": 4.2, "totalViews": 53900 }
+  ],
+  "dayOfWeek": [
+    { "day": "Monday", "percentage": 12.8, "views": 164300 },
+    { "day": "Tuesday", "percentage": 13.5, "views": 173200 },
+    { "day": "Wednesday", "percentage": 14.7, "views": 188600 },
+    { "day": "Thursday", "percentage": 15.6, "views": 200100 },
+    { "day": "Friday", "percentage": 15.2, "views": 195000 },
+    { "day": "Saturday", "percentage": 14.1, "views": 181200 },
+    { "day": "Sunday", "percentage": 14.1, "views": 181200 }
+  ],
+  "titleAnalysis": {
+    "avgWordCount": 5.9,
+    "emojiPct": 0,
+    "questionPct": 0,
+    "numbersPct": 12,
+    "topKeywords": [
+      { "keyword": "sleep", "count": 2 },
+      { "keyword": "focus", "count": 2 },
+      { "keyword": "ambient", "count": 1 },
+      { "keyword": "study", "count": 1 },
+      { "keyword": "piano", "count": 1 },
+      { "keyword": "writing", "count": 1 }
+    ],
+    "structureTypes": [
+      { "structure": "descriptive", "count": 5, "percentage": 62.5 },
+      { "structure": "colon_split", "count": 2, "percentage": 25.0 },
+      { "structure": "series_label", "count": 1, "percentage": 12.5 }
+    ],
+    "sampleTitles": [
+      { "videoId": "vid_005", "title": "Quiet Harbor Sleep Soundscape", "lengthWords": 4, "hasEmoji": false, "hasQuestionMark": false, "hasNumbers": false, "structureType": "descriptive" },
+      { "videoId": "vid_001", "title": "Midnight Letters: Ambient Focus Session", "lengthWords": 5, "hasEmoji": false, "hasQuestionMark": false, "hasNumbers": false, "structureType": "colon_split" },
+      { "videoId": "vid_002", "title": "Rain Window Study Room", "lengthWords": 4, "hasEmoji": false, "hasQuestionMark": false, "hasNumbers": false, "structureType": "descriptive" },
+      { "videoId": "vid_007", "title": "Lantern Library: Volume Two", "lengthWords": 4, "hasEmoji": false, "hasQuestionMark": false, "hasNumbers": true, "structureType": "series_label" }
+    ]
+  }
+}

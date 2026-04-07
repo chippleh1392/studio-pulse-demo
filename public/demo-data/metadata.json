@@ -1,0 +1,145 @@
+{
+  "channel": {
+    "nicheSummary": "Calm long-form listening designed for sleep, focus, journaling, and ambient routines.",
+    "targetKeywords": ["sleep", "focus", "study", "ambient", "soundscape", "deep work"],
+    "avoidKeywords": ["viral", "reaction", "meme", "drama"],
+    "observedKeywords": ["sleep", "rain", "focus", "night", "study", "ambient", "piano", "deep work", "library", "soundscape", "journaling", "writing", "calm", "routine"],
+    "channelAlignmentScore": 82.4
+  },
+  "summary": {
+    "avgMetadataScore": 78.6,
+    "avgNicheAlignmentScore": 81.1,
+    "videosWithIssues": 5,
+    "issueRatePct": 62.5,
+    "videosWithCriticalIssues": 1,
+    "criticalIssueRatePct": 12.5
+  },
+  "issues": [
+    { "code": "LOW_TAG_COVERAGE", "label": "Low tag coverage", "severity": "warning", "count": 4 },
+    { "code": "WEAK_FOCUS_KEYWORD", "label": "Weak focus keyword presence", "severity": "warning", "count": 3 },
+    { "code": "THUMB_TEXT_MISSING", "label": "Thumbnail text field missing", "severity": "warning", "count": 2 },
+    { "code": "TITLE_TOO_GENERIC", "label": "Title too generic for niche intent", "severity": "critical", "count": 1 }
+  ],
+  "videos": [
+    {
+      "videoId": "vid_005",
+      "title": "Quiet Harbor Sleep Soundscape",
+      "publishedAt": "2026-02-11",
+      "views": 161500,
+      "metadataScore": 92.0,
+      "nicheAlignmentScore": 94.0,
+      "tagCount": 12,
+      "theme": "Sleep",
+      "thumbnailText": "Harbor sleep",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "videoId": "vid_001",
+      "title": "Midnight Letters: Ambient Focus Session",
+      "publishedAt": "2026-03-28",
+      "views": 148200,
+      "metadataScore": 88.0,
+      "nicheAlignmentScore": 91.0,
+      "tagCount": 11,
+      "theme": "Night focus",
+      "thumbnailText": "Midnight focus",
+      "issueCount": 1,
+      "issues": [{ "code": "LOW_TAG_COVERAGE", "severity": "warning" }]
+    },
+    {
+      "videoId": "vid_002",
+      "title": "Rain Window Study Room",
+      "publishedAt": "2026-03-17",
+      "views": 131800,
+      "metadataScore": 86.0,
+      "nicheAlignmentScore": 89.0,
+      "tagCount": 10,
+      "theme": "Study ambience",
+      "thumbnailText": "Rain study",
+      "issueCount": 1,
+      "issues": [{ "code": "LOW_TAG_COVERAGE", "severity": "warning" }]
+    },
+    {
+      "videoId": "vid_003",
+      "title": "Soft Lantern Piano for Deep Work",
+      "publishedAt": "2026-03-05",
+      "views": 118400,
+      "metadataScore": 79.0,
+      "nicheAlignmentScore": 83.0,
+      "tagCount": 8,
+      "theme": "Deep work",
+      "thumbnailText": "Lantern piano",
+      "issueCount": 2,
+      "issues": [
+        { "code": "LOW_TAG_COVERAGE", "severity": "warning" },
+        { "code": "WEAK_FOCUS_KEYWORD", "severity": "warning" }
+      ]
+    },
+    {
+      "videoId": "vid_004",
+      "title": "Afterglow Journaling Mix",
+      "publishedAt": "2026-02-20",
+      "views": 104900,
+      "metadataScore": 73.0,
+      "nicheAlignmentScore": 76.0,
+      "tagCount": 7,
+      "theme": "Reflection",
+      "thumbnailText": null,
+      "issueCount": 2,
+      "issues": [
+        { "code": "THUMB_TEXT_MISSING", "severity": "warning" },
+        { "code": "WEAK_FOCUS_KEYWORD", "severity": "warning" }
+      ]
+    },
+    {
+      "videoId": "vid_006",
+      "title": "Golden Hour Writing Atmosphere",
+      "publishedAt": "2026-01-29",
+      "views": 88300,
+      "metadataScore": 68.0,
+      "nicheAlignmentScore": 70.0,
+      "tagCount": 6,
+      "theme": "Creative flow",
+      "thumbnailText": "Golden hour",
+      "issueCount": 2,
+      "issues": [
+        { "code": "LOW_TAG_COVERAGE", "severity": "warning" },
+        { "code": "WEAK_FOCUS_KEYWORD", "severity": "warning" }
+      ]
+    },
+    {
+      "videoId": "vid_007",
+      "title": "Lantern Library: Volume Two",
+      "publishedAt": "2026-01-14",
+      "views": 96600,
+      "metadataScore": 64.0,
+      "nicheAlignmentScore": 67.0,
+      "tagCount": 5,
+      "theme": "Library ambience",
+      "thumbnailText": "Library",
+      "issueCount": 3,
+      "issues": [
+        { "code": "LOW_TAG_COVERAGE", "severity": "warning" },
+        { "code": "WEAK_FOCUS_KEYWORD", "severity": "warning" },
+        { "code": "TITLE_TOO_GENERIC", "severity": "critical" }
+      ]
+    },
+    {
+      "videoId": "vid_008",
+      "title": "Dawn Sketchbook Background Loop",
+      "publishedAt": "2026-01-03",
+      "views": 74200,
+      "metadataScore": 59.0,
+      "nicheAlignmentScore": 59.0,
+      "tagCount": 4,
+      "theme": "Morning routine",
+      "thumbnailText": null,
+      "issueCount": 2,
+      "issues": [
+        { "code": "THUMB_TEXT_MISSING", "severity": "warning" },
+        { "code": "LOW_TAG_COVERAGE", "severity": "warning" }
+      ]
+    }
+  ]
+}

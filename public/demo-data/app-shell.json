@@ -1,22 +1,25 @@
 {
   "app": {
-    "name": "Studio Pulse Demo",
+    "name": "Studio Pulse",
     "demoMode": true,
     "dataAsOf": "2026-04-01",
-    "version": "phase-2-static-data"
+    "version": "public-demo"
   },
   "channel": {
     "id": "demo_channel",
     "name": "Northstar Studio",
     "subtitle": "Synthetic analytics workspace for a calm long-form content brand",
-    "description": "A public, sanitized demo dataset that preserves product patterns while removing all private operating details."
+    "description": "A public-safe demo channel that preserves the product's monitoring patterns while removing all private operating artifacts."
   },
   "features": {
     "overview": true,
     "videos": true,
     "growth": true,
     "technicalAnalysis": true,
-    "metadata": false,
+    "metadata": true,
+    "breakout": true,
+    "creative": true,
+    "insights": true,
     "songs": false
   }
 }

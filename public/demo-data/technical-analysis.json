@@ -1,40 +1,72 @@
 {
   "timeframeLabel": "12-week synthetic sample",
-  "rating": {
-    "label": "Bullish",
-    "score": 78,
-    "summary": "Momentum is healthy, baseline performance is rising, and recent releases are sustaining stronger-than-average watch depth."
-  },
-  "signals": [
-    {
-      "name": "Trend",
-      "status": "Bullish",
-      "detail": "Weekly view velocity has established a clear higher-high pattern across the recent sample."
+  "meta": {
+    "windows": {
+      "short": 3,
+      "mid": 5,
+      "long": 8
     },
-    {
-      "name": "Momentum",
-      "status": "Bullish",
-      "detail": "The last three releases outperformed the prior trailing average on both reach and watch hours."
-    },
-    {
-      "name": "Conviction",
-      "status": "Neutral",
-      "detail": "Performance remains concentrated in a narrow set of packaging choices, so creative breadth is still a risk."
-    },
-    {
-      "name": "Volatility",
-      "status": "Controlled",
-      "detail": "Weekly variance exists, but the downside weeks are still above the older local baseline."
+    "rsiPeriod": 5,
+    "macd": {
+      "fast": 3,
+      "slow": 6,
+      "signal": 3
     }
-  ],
-  "supportLevels": [
-    { "label": "Base support", "value": "90K weekly views" },
-    { "label": "Momentum threshold", "value": "105K weekly views" },
-    { "label": "Breakout zone", "value": "120K+ weekly views" }
-  ],
-  "actionBias": [
-    "Keep the highest-performing visual system stable for the next release block.",
-    "Test one adjacent concept inside the winning package before broadening the content mix.",
-    "Use two-release clusters selectively when the top theme is already validated."
+  },
+  "metrics": [
+    {
+      "id": "views",
+      "label": "Views",
+      "points": [
+        { "date": "2026-01-05", "value": 78000, "changeAbs": -1200, "changePct": -1.5, "rsi": 48, "roc": -1.5, "zscore": -0.6, "macdLine": -220, "macdSignal": -180, "overlays": { "smaShort": 78600, "smaMid": 80100, "smaLong": 83400, "emaShort": 78400, "emaMid": 79600, "emaLong": 82200, "bbUpper": 85600, "bbMid": 80100, "bbLower": 74600 } },
+        { "date": "2026-01-12", "value": 81200, "changeAbs": 3200, "changePct": 4.1, "rsi": 52, "roc": 4.1, "zscore": -0.2, "macdLine": -80, "macdSignal": -120, "overlays": { "smaShort": 79900, "smaMid": 80700, "smaLong": 82950, "emaShort": 80100, "emaMid": 80600, "emaLong": 82100, "bbUpper": 86100, "bbMid": 80700, "bbLower": 75300 } },
+        { "date": "2026-01-19", "value": 86500, "changeAbs": 5300, "changePct": 6.5, "rsi": 57, "roc": 6.5, "zscore": 0.3, "macdLine": 120, "macdSignal": 10, "overlays": { "smaShort": 81900, "smaMid": 82000, "smaLong": 82880, "emaShort": 83300, "emaMid": 82250, "emaLong": 82800, "bbUpper": 87800, "bbMid": 82000, "bbLower": 76200 } },
+        { "date": "2026-01-26", "value": 90200, "changeAbs": 3700, "changePct": 4.3, "rsi": 60, "roc": 4.3, "zscore": 0.7, "macdLine": 260, "macdSignal": 150, "overlays": { "smaShort": 85967, "smaMid": 83820, "smaLong": 83225, "emaShort": 86750, "emaMid": 84850, "emaLong": 83950, "bbUpper": 89900, "bbMid": 83820, "bbLower": 77740 } },
+        { "date": "2026-02-02", "value": 94800, "changeAbs": 4600, "changePct": 5.1, "rsi": 64, "roc": 5.1, "zscore": 1.1, "macdLine": 420, "macdSignal": 290, "overlays": { "smaShort": 90500, "smaMid": 86140, "smaLong": 84440, "emaShort": 90775, "emaMid": 87833, "emaLong": 86350, "bbUpper": 92950, "bbMid": 86140, "bbLower": 79330 } },
+        { "date": "2026-02-09", "value": 92100, "changeAbs": -2700, "changePct": -2.8, "rsi": 58, "roc": -2.8, "zscore": 0.6, "macdLine": 280, "macdSignal": 310, "overlays": { "smaShort": 92367, "smaMid": 88600, "smaLong": 86050, "emaShort": 91438, "emaMid": 89255, "emaLong": 87630, "bbUpper": 94120, "bbMid": 88600, "bbLower": 83080 } },
+        { "date": "2026-02-16", "value": 99500, "changeAbs": 7400, "changePct": 8.0, "rsi": 68, "roc": 8.0, "zscore": 1.5, "macdLine": 560, "macdSignal": 430, "overlays": { "smaShort": 95467, "smaMid": 92620, "smaLong": 88663, "emaShort": 95469, "emaMid": 92703, "emaLong": 90378, "bbUpper": 98020, "bbMid": 92620, "bbLower": 87220 } },
+        { "date": "2026-02-23", "value": 101200, "changeAbs": 1700, "changePct": 1.7, "rsi": 69, "roc": 1.7, "zscore": 1.6, "macdLine": 610, "macdSignal": 520, "overlays": { "smaShort": 97600, "smaMid": 95560, "smaLong": 91075, "emaShort": 98334, "emaMid": 95535, "emaLong": 92894, "bbUpper": 100880, "bbMid": 95560, "bbLower": 90240 } },
+        { "date": "2026-03-02", "value": 106900, "changeAbs": 5700, "changePct": 5.6, "rsi": 73, "roc": 5.6, "zscore": 2.0, "macdLine": 760, "macdSignal": 640, "overlays": { "smaShort": 102533, "smaMid": 98900, "smaLong": 94525, "emaShort": 102617, "emaMid": 99323, "emaLong": 96007, "bbUpper": 104900, "bbMid": 98900, "bbLower": 92900 } },
+        { "date": "2026-03-09", "value": 109400, "changeAbs": 2500, "changePct": 2.3, "rsi": 74, "roc": 2.3, "zscore": 2.2, "macdLine": 820, "macdSignal": 730, "overlays": { "smaShort": 105833, "smaMid": 101820, "smaLong": 97200, "emaShort": 106008, "emaMid": 102682, "emaLong": 98915, "bbUpper": 107850, "bbMid": 101820, "bbLower": 95790 } },
+        { "date": "2026-03-16", "value": 114800, "changeAbs": 5400, "changePct": 4.9, "rsi": 78, "roc": 4.9, "zscore": 2.5, "macdLine": 950, "macdSignal": 840, "overlays": { "smaShort": 110367, "smaMid": 106360, "smaLong": 100825, "emaShort": 110404, "emaMid": 106721, "emaLong": 102446, "bbUpper": 112900, "bbMid": 106360, "bbLower": 99820 } },
+        { "date": "2026-03-23", "value": 118600, "changeAbs": 3800, "changePct": 3.3, "rsi": 79, "roc": 3.3, "zscore": 2.7, "macdLine": 1020, "macdSignal": 920, "overlays": { "smaShort": 114267, "smaMid": 110300, "smaLong": 104575, "emaShort": 114502, "emaMid": 110681, "emaLong": 106036, "bbUpper": 116700, "bbMid": 110300, "bbLower": 103900 } }
+      ]
+    },
+    {
+      "id": "watchHours",
+      "label": "Watch Time (hours)",
+      "points": [
+        { "date": "2026-01-05", "value": 55200, "changeAbs": -800, "changePct": -1.4, "rsi": 49, "roc": -1.4, "zscore": -0.4, "macdLine": -120, "macdSignal": -90, "overlays": { "smaShort": 55500, "smaMid": 56400, "smaLong": 58000, "emaShort": 55400, "emaMid": 56100, "emaLong": 57400, "bbUpper": 59800, "bbMid": 56400, "bbLower": 53000 } },
+        { "date": "2026-01-12", "value": 57800, "changeAbs": 2600, "changePct": 4.7, "rsi": 53, "roc": 4.7, "zscore": -0.1, "macdLine": -20, "macdSignal": -50, "overlays": { "smaShort": 56500, "smaMid": 56900, "smaLong": 57850, "emaShort": 56600, "emaMid": 56950, "emaLong": 57600, "bbUpper": 60400, "bbMid": 56900, "bbLower": 53400 } },
+        { "date": "2026-01-19", "value": 60100, "changeAbs": 2300, "changePct": 4.0, "rsi": 57, "roc": 4.0, "zscore": 0.3, "macdLine": 70, "macdSignal": 10, "overlays": { "smaShort": 57700, "smaMid": 57540, "smaLong": 57920, "emaShort": 58350, "emaMid": 57950, "emaLong": 58250, "bbUpper": 61300, "bbMid": 57540, "bbLower": 53780 } },
+        { "date": "2026-01-26", "value": 62400, "changeAbs": 2300, "changePct": 3.8, "rsi": 60, "roc": 3.8, "zscore": 0.6, "macdLine": 150, "macdSignal": 90, "overlays": { "smaShort": 60100, "smaMid": 58840, "smaLong": 58360, "emaShort": 60375, "emaMid": 59433, "emaLong": 59100, "bbUpper": 62800, "bbMid": 58840, "bbLower": 54880 } },
+        { "date": "2026-02-02", "value": 66000, "changeAbs": 3600, "changePct": 5.8, "rsi": 65, "roc": 5.8, "zscore": 1.1, "macdLine": 280, "macdSignal": 190, "overlays": { "smaShort": 62833, "smaMid": 60300, "smaLong": 59440, "emaShort": 63188, "emaMid": 61622, "emaLong": 60600, "bbUpper": 64950, "bbMid": 60300, "bbLower": 55650 } },
+        { "date": "2026-02-09", "value": 64800, "changeAbs": -1200, "changePct": -1.8, "rsi": 61, "roc": -1.8, "zscore": 0.8, "macdLine": 220, "macdSignal": 215, "overlays": { "smaShort": 64400, "smaMid": 62220, "smaLong": 60883, "emaShort": 63994, "emaMid": 62681, "emaLong": 61533, "bbUpper": 65680, "bbMid": 62220, "bbLower": 58760 } },
+        { "date": "2026-02-16", "value": 69800, "changeAbs": 5000, "changePct": 7.7, "rsi": 69, "roc": 7.7, "zscore": 1.5, "macdLine": 390, "macdSignal": 300, "overlays": { "smaShort": 66867, "smaMid": 64620, "smaLong": 62638, "emaShort": 66897, "emaMid": 65054, "emaLong": 63370, "bbUpper": 68220, "bbMid": 64620, "bbLower": 61020 } },
+        { "date": "2026-02-23", "value": 71300, "changeAbs": 1500, "changePct": 2.1, "rsi": 70, "roc": 2.1, "zscore": 1.6, "macdLine": 430, "macdSignal": 365, "overlays": { "smaShort": 68633, "smaMid": 66860, "smaLong": 64388, "emaShort": 69099, "emaMid": 67136, "emaLong": 65133, "bbUpper": 70340, "bbMid": 66860, "bbLower": 63380 } },
+        { "date": "2026-03-02", "value": 74500, "changeAbs": 3200, "changePct": 4.5, "rsi": 74, "roc": 4.5, "zscore": 2.0, "macdLine": 520, "macdSignal": 442, "overlays": { "smaShort": 71867, "smaMid": 69280, "smaLong": 66313, "emaShort": 71800, "emaMid": 69621, "emaLong": 67259, "bbUpper": 72880, "bbMid": 69280, "bbLower": 65680 } },
+        { "date": "2026-03-09", "value": 77100, "changeAbs": 2600, "changePct": 3.5, "rsi": 76, "roc": 3.5, "zscore": 2.2, "macdLine": 590, "macdSignal": 516, "overlays": { "smaShort": 74300, "smaMid": 71500, "smaLong": 68125, "emaShort": 74450, "emaMid": 72114, "emaLong": 68396, "bbUpper": 75200, "bbMid": 71500, "bbLower": 67800 } },
+        { "date": "2026-03-16", "value": 79900, "changeAbs": 2800, "changePct": 3.6, "rsi": 78, "roc": 3.6, "zscore": 2.4, "macdLine": 670, "macdSignal": 593, "overlays": { "smaShort": 77167, "smaMid": 74520, "smaLong": 70538, "emaShort": 77175, "emaMid": 74709, "emaLong": 70952, "bbUpper": 78120, "bbMid": 74520, "bbLower": 70920 } },
+        { "date": "2026-03-23", "value": 82400, "changeAbs": 2500, "changePct": 3.1, "rsi": 79, "roc": 3.1, "zscore": 2.5, "macdLine": 730, "macdSignal": 661, "overlays": { "smaShort": 79800, "smaMid": 77040, "smaLong": 72875, "emaShort": 79788, "emaMid": 77272, "emaLong": 73518, "bbUpper": 80600, "bbMid": 77040, "bbLower": 73480 } }
+      ]
+    },
+    {
+      "id": "subscribers",
+      "label": "Net Subscribers",
+      "points": [
+        { "date": "2026-01-05", "value": 130, "changeAbs": -4, "changePct": -3.0, "rsi": 47, "roc": -3.0, "zscore": -0.7, "macdLine": -3, "macdSignal": -2, "overlays": { "smaShort": 132, "smaMid": 136, "smaLong": 142, "emaShort": 131, "emaMid": 135, "emaLong": 140, "bbUpper": 150, "bbMid": 136, "bbLower": 122 } },
+        { "date": "2026-01-12", "value": 142, "changeAbs": 12, "changePct": 9.2, "rsi": 53, "roc": 9.2, "zscore": -0.1, "macdLine": 1, "macdSignal": -1, "overlays": { "smaShort": 136, "smaMid": 138, "smaLong": 141, "emaShort": 137, "emaMid": 139, "emaLong": 141, "bbUpper": 152, "bbMid": 138, "bbLower": 124 } },
+        { "date": "2026-01-19", "value": 151, "changeAbs": 9, "changePct": 6.3, "rsi": 57, "roc": 6.3, "zscore": 0.3, "macdLine": 4, "macdSignal": 2, "overlays": { "smaShort": 141, "smaMid": 142, "smaLong": 142, "emaShort": 144, "emaMid": 143, "emaLong": 143, "bbUpper": 156, "bbMid": 142, "bbLower": 128 } },
+        { "date": "2026-01-26", "value": 168, "changeAbs": 17, "changePct": 11.3, "rsi": 62, "roc": 11.3, "zscore": 0.9, "macdLine": 9, "macdSignal": 6, "overlays": { "smaShort": 154, "smaMid": 147, "smaLong": 145, "emaShort": 156, "emaMid": 151, "emaLong": 148, "bbUpper": 166, "bbMid": 147, "bbLower": 128 } },
+        { "date": "2026-02-02", "value": 176, "changeAbs": 8, "changePct": 4.8, "rsi": 65, "roc": 4.8, "zscore": 1.2, "macdLine": 12, "macdSignal": 9, "overlays": { "smaShort": 165, "smaMid": 153, "smaLong": 149, "emaShort": 166, "emaMid": 159, "emaLong": 154, "bbUpper": 176, "bbMid": 153, "bbLower": 130 } },
+        { "date": "2026-02-09", "value": 170, "changeAbs": -6, "changePct": -3.4, "rsi": 58, "roc": -3.4, "zscore": 0.6, "macdLine": 8, "macdSignal": 9, "overlays": { "smaShort": 171, "smaMid": 161, "smaLong": 156, "emaShort": 168, "emaMid": 163, "emaLong": 158, "bbUpper": 178, "bbMid": 161, "bbLower": 144 } },
+        { "date": "2026-02-16", "value": 185, "changeAbs": 15, "changePct": 8.8, "rsi": 68, "roc": 8.8, "zscore": 1.4, "macdLine": 15, "macdSignal": 12, "overlays": { "smaShort": 177, "smaMid": 170, "smaLong": 163, "emaShort": 177, "emaMid": 170, "emaLong": 164, "bbUpper": 187, "bbMid": 170, "bbLower": 153 } },
+        { "date": "2026-02-23", "value": 191, "changeAbs": 6, "changePct": 3.2, "rsi": 70, "roc": 3.2, "zscore": 1.6, "macdLine": 17, "macdSignal": 15, "overlays": { "smaShort": 182, "smaMid": 178, "smaLong": 169, "emaShort": 184, "emaMid": 177, "emaLong": 170, "bbUpper": 194, "bbMid": 178, "bbLower": 162 } },
+        { "date": "2026-03-02", "value": 204, "changeAbs": 13, "changePct": 6.8, "rsi": 74, "roc": 6.8, "zscore": 2.0, "macdLine": 22, "macdSignal": 18, "overlays": { "smaShort": 193, "smaMid": 185, "smaLong": 176, "emaShort": 194, "emaMid": 186, "emaLong": 178, "bbUpper": 204, "bbMid": 185, "bbLower": 166 } },
+        { "date": "2026-03-09", "value": 211, "changeAbs": 7, "changePct": 3.4, "rsi": 76, "roc": 3.4, "zscore": 2.2, "macdLine": 24, "macdSignal": 21, "overlays": { "smaShort": 202, "smaMid": 192, "smaLong": 184, "emaShort": 203, "emaMid": 194, "emaLong": 185, "bbUpper": 213, "bbMid": 192, "bbLower": 171 } },
+        { "date": "2026-03-16", "value": 224, "changeAbs": 13, "changePct": 6.2, "rsi": 79, "roc": 6.2, "zscore": 2.5, "macdLine": 29, "macdSignal": 25, "overlays": { "smaShort": 213, "smaMid": 203, "smaLong": 193, "emaShort": 214, "emaMid": 204, "emaLong": 194, "bbUpper": 225, "bbMid": 203, "bbLower": 181 } },
+        { "date": "2026-03-23", "value": 236, "changeAbs": 12, "changePct": 5.4, "rsi": 81, "roc": 5.4, "zscore": 2.8, "macdLine": 33, "macdSignal": 29, "overlays": { "smaShort": 224, "smaMid": 213, "smaLong": 202, "emaShort": 225, "emaMid": 214, "emaLong": 203, "bbUpper": 237, "bbMid": 213, "bbLower": 189 } }
+      ]
+    }
   ]
 }

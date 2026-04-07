@@ -1,24 +1,109 @@
-import { useEffect, useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowDown, ArrowUp, ArrowUpDown, Filter, Search, X } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { getVideosData } from '@/lib/demo-client/client'
 import type { DemoVideo, VideosData } from '@/lib/demo-client/types'
-import { formatCompactNumber, formatDate, formatLongNumber, formatPercent } from '@/lib/formatters'
+
+type VideoTypeFilter = 'all' | 'videos' | 'live'
+type SortKey = 'publishedAt' | 'views' | 'watchHours' | 'ctr' | 'avdSeconds' | 'score'
+type SortDirection = 'asc' | 'desc'
+
+const tierColors: Record<DemoVideo['tier'], string> = {
+  Excellent: 'bg-emerald-500/10 text-emerald-600 border-emerald-200',
+  Good: 'bg-blue-500/10 text-blue-600 border-blue-200',
+  Average: 'bg-amber-500/10 text-amber-600 border-amber-200',
+  Poor: 'bg-red-500/10 text-red-600 border-red-200',
+}
+
+function formatAvd(seconds: number): string {
+  const totalSeconds = Math.max(0, Math.round(seconds))
+  const mins = Math.floor(totalSeconds / 60)
+  const secs = totalSeconds % 60
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
+function formatDate(value: string): string {
+  return new Date(`${value}T00:00:00`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+function formatCompactNumber(value: number): string {
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    maximumFractionDigits: value >= 100000 ? 1 : 0,
+  }).format(value)
+}
+
+function formatLongNumber(value: number): string {
+  return new Intl.NumberFormat('en-US').format(value)
+}
+
+function formatPercent(value: number): string {
+  return `${value.toFixed(1)}%`
+}
+
+function buildFilteredSummary(items: DemoVideo[]) {
+  const totalViews = items.reduce((sum, video) => sum + video.views, 0)
+  const totalWatchHours = items.reduce((sum, video) => sum + video.watchHours, 0)
+  const weightedCtrNumerator = items.reduce((sum, video) => sum + video.ctr * video.impressions, 0)
+  const weightedCtrDenominator = items.reduce((sum, video) => sum + video.impressions, 0)
+  const avgAvdSeconds = items.length
+    ? items.reduce((sum, video) => sum + video.avdSeconds, 0) / items.length
+    : 0
+  const avgApv = items.length ? items.reduce((sum, video) => sum + video.avp, 0) / items.length : 0
+  const avgScore = items.length ? items.reduce((sum, video) => sum + video.score, 0) / items.length : 0
+
+  return {
+    totalViews,
+    totalWatchHours,
+    weightedCtr: weightedCtrDenominator > 0 ? weightedCtrNumerator / weightedCtrDenominator : 0,
+    avgAvdSeconds,
+    avgApv,
+    avgScore,
+  }
+}
+
+function VideoThumbnail({ video }: { video: DemoVideo }) {
+  return (
+    <div className="flex h-[74px] w-[132px] items-end overflow-hidden rounded-lg border border-slate-200 bg-[linear-gradient(160deg,#d6e7f4_0%,#bfcee7_48%,#b8a9d8_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]">
+      <div className="rounded bg-white/70 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 backdrop-blur-sm">
+        {video.thumbnailLabel}
+      </div>
+    </div>
+  )
+}
 
 export default function VideosPage() {
   const [data, setData] = useState<VideosData | null>(null)
-  const [query, setQuery] = useState('')
-  const [sortBy, setSortBy] = useState<'score' | 'views' | 'ctr'>('score')
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [videoTypeFilter, setVideoTypeFilter] = useState<VideoTypeFilter>('all')
+  const [sortKey, setSortKey] = useState<SortKey>('publishedAt')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 
   useEffect(() => {
     let cancelled = false
+    setIsLoading(true)
 
     getVideosData()
       .then((result) => {
-        if (!cancelled) setData(result)
+        if (cancelled) return
+        setData(result)
+        setIsLoading(false)
       })
       .catch(() => {
-        if (!cancelled) setData(null)
+        if (cancelled) return
+        setData(null)
+        setIsLoading(false)
       })
 
     return () => {
@@ -26,133 +111,257 @@ export default function VideosPage() {
     }
   }, [])
 
-  let visibleItems = data?.items || []
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setSearchQuery(searchInput.trim().toLowerCase())
+    }, 200)
+    return () => window.clearTimeout(timer)
+  }, [searchInput])
 
-  if (query.trim()) {
-    const needle = query.trim().toLowerCase()
-    visibleItems = visibleItems.filter(
-      (item) =>
-        item.title.toLowerCase().includes(needle) ||
-        item.format.toLowerCase().includes(needle) ||
-        item.theme.toLowerCase().includes(needle)
+  const displayedVideos = useMemo(() => {
+    let items = data?.items ?? []
+
+    if (videoTypeFilter === 'videos') items = items.filter((video) => !video.isLive)
+    if (videoTypeFilter === 'live') items = items.filter((video) => video.isLive)
+
+    if (searchQuery) {
+      items = items.filter((video) =>
+        [video.title, video.format, video.theme, video.summary]
+          .join(' ')
+          .toLowerCase()
+          .includes(searchQuery)
+      )
+    }
+
+    return [...items].sort((left, right) => {
+      const modifier = sortDirection === 'asc' ? 1 : -1
+      if (sortKey === 'publishedAt') {
+        return left.publishedAt.localeCompare(right.publishedAt) * modifier
+      }
+      return (left[sortKey] - right[sortKey]) * modifier
+    })
+  }, [data?.items, searchQuery, sortDirection, sortKey, videoTypeFilter])
+
+  const filteredSummary = useMemo(() => buildFilteredSummary(displayedVideos), [displayedVideos])
+  const bestVideo = displayedVideos[0] ?? null
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))
+      return
+    }
+    setSortKey(key)
+    setSortDirection('desc')
+  }
+
+  const getSortIcon = (columnKey: SortKey) => {
+    if (sortKey !== columnKey) return <ArrowUpDown className="ml-1 inline h-3 w-3 text-muted-foreground" />
+    return sortDirection === 'asc' ? (
+      <ArrowUp className="ml-1 inline h-3 w-3" />
+    ) : (
+      <ArrowDown className="ml-1 inline h-3 w-3" />
     )
   }
 
-  visibleItems = [...visibleItems].sort((left, right) => {
-    if (sortBy === 'views') return right.views - left.views
-    if (sortBy === 'ctr') return right.ctr - left.ctr
-    return right.score - left.score
-  })
-
-  const bestVideo: DemoVideo | null = visibleItems[0] ?? null
+  const hasActiveFilters = videoTypeFilter !== 'all' || Boolean(searchQuery)
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Videos"
-        description="Synthetic video list demonstrating the intended list, sort, and packaging-analysis surface."
-        contextLabel="Visible items"
-        contextValue={String(visibleItems.length)}
+        description="Filter, sort, and compare video-level performance."
+        contextLabel="Mode"
+        contextValue="Diagnose"
       />
 
-      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Video Table Direction</CardTitle>
-            <CardDescription>Phase 2 keeps the route static while restoring useful list mechanics.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-col gap-3 md:flex-row">
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Filter by title, format, or theme"
-                className="h-10 flex-1 rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-primary"
-              />
-              <select
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value as 'score' | 'views' | 'ctr')}
-                className="h-10 rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-primary"
+      {!isLoading && displayedVideos.length > 0 && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-7">
+          <MetricCard label="Filtered Videos" value={String(displayedVideos.length)} />
+          <MetricCard label="Total Views" value={formatLongNumber(filteredSummary.totalViews)} />
+          <MetricCard label="Watch Time (hrs)" value={formatLongNumber(Math.round(filteredSummary.totalWatchHours))} />
+          <MetricCard label="Weighted CTR" value={formatPercent(filteredSummary.weightedCtr)} />
+          <MetricCard label="Avg AVD" value={formatAvd(filteredSummary.avgAvdSeconds)} />
+          <MetricCard label="Avg APV" value={formatPercent(filteredSummary.avgApv)} />
+          <MetricCard label="Avg Score" value={filteredSummary.avgScore.toFixed(0)} />
+        </div>
+      )}
+
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+              <CardTitle>Video Library</CardTitle>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Static demo data, real app list mechanics.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 justify-end">
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
+                  placeholder="Search titles, themes, formats..."
+                  className="h-9 w-64 pl-9"
+                />
+              </div>
+              <div className="flex items-center rounded-md border text-sm">
+                {(['all', 'videos', 'live'] as VideoTypeFilter[]).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setVideoTypeFilter(type)}
+                    className={`px-3 py-2 capitalize ${
+                      videoTypeFilter === type ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                    }`}
+                  >
+                    {type === 'all' ? 'All' : type === 'videos' ? 'Videos' : 'Live'}
+                  </button>
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setSearchInput('')
+                  setSearchQuery('')
+                  setVideoTypeFilter('all')
+                }}
               >
-                <option value="score">Sort by score</option>
-                <option value="views">Sort by views</option>
-                <option value="ctr">Sort by CTR</option>
-              </select>
+                <Filter className="mr-2 h-4 w-4" />
+                Reset
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {hasActiveFilters && (
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">Active filters:</span>
+              {videoTypeFilter !== 'all' && (
+                <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-sm text-primary">
+                  {videoTypeFilter === 'videos' ? 'VOD only' : 'Live only'}
+                  <button type="button" onClick={() => setVideoTypeFilter('all')}>
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-sm text-primary">
+                  Search: {searchQuery}
+                  <button type="button" onClick={() => { setSearchInput(''); setSearchQuery('') }}>
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+            </div>
+          )}
+
+          {!isLoading && bestVideo && (
+            <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 text-emerald-900">
+              <div className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                Best current signal
+              </div>
+              <div className="mt-2 text-base font-semibold">{bestVideo.title}</div>
+              <p className="mt-1 text-sm text-emerald-800">{bestVideo.summary}</p>
+            </div>
+          )}
+
+          <div className="overflow-hidden rounded-lg border">
+            <div className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 border-b bg-muted/50 p-4 text-sm font-medium items-center">
+              <div></div>
+              <div>Title</div>
+              <button type="button" onClick={() => handleSort('publishedAt')} className="text-left">
+                Published{getSortIcon('publishedAt')}
+              </button>
+              <button type="button" onClick={() => handleSort('views')} className="text-left">
+                Views{getSortIcon('views')}
+              </button>
+              <button type="button" onClick={() => handleSort('watchHours')} className="text-left">
+                Watch Time{getSortIcon('watchHours')}
+              </button>
+              <button type="button" onClick={() => handleSort('ctr')} className="text-left">
+                CTR{getSortIcon('ctr')}
+              </button>
+              <button type="button" onClick={() => handleSort('avdSeconds')} className="text-left">
+                AVD{getSortIcon('avdSeconds')}
+              </button>
+              <button type="button" onClick={() => handleSort('score')} className="text-left">
+                Score{getSortIcon('score')}
+              </button>
             </div>
 
-            <div className="space-y-3">
-              {visibleItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-2xl border border-border/70 bg-background/85 p-4 shadow-[0_1px_2px_rgba(15,18,26,0.03)]"
-                >
-                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                    <div className="space-y-1">
-                      <div className="text-base font-semibold tracking-tight">{item.title}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {formatDate(item.publishedAt)} · {item.format} · {item.theme}
+            {isLoading ? (
+              <div className="divide-y">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div key={`video-skeleton-${index}`} className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 items-center p-4">
+                    <Skeleton className="h-[74px] w-[132px] rounded-lg" />
+                    <Skeleton className="h-5 w-full" />
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-14" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-10" />
+                    <Skeleton className="h-4 w-12" />
+                    <Skeleton className="h-5 w-14" />
+                  </div>
+                ))}
+              </div>
+            ) : displayedVideos.length > 0 ? (
+              <div className="divide-y">
+                {displayedVideos.map((video) => (
+                  <div key={video.id} className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 items-center p-4 text-sm">
+                    <Link to={`/videos/${video.id}`} className="block">
+                      <VideoThumbnail video={video} />
+                    </Link>
+                    <div className="min-w-0">
+                      <Link to={`/videos/${video.id}`} className="truncate font-medium text-primary hover:underline">
+                        {video.title}
+                      </Link>
+                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>{video.format}</span>
+                        <span>·</span>
+                        <span>{video.theme}</span>
+                        {video.isLive && (
+                          <span className="rounded border border-red-200 bg-red-500/10 px-1.5 py-0.5 font-semibold uppercase text-red-600">
+                            Live
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <div className="inline-flex rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-                      Score {item.score}
+                    <div>{formatDate(video.publishedAt)}</div>
+                    <div>{formatLongNumber(video.views)}</div>
+                    <div>{formatCompactNumber(Math.round(video.watchHours))}</div>
+                    <div>{formatPercent(video.ctr)}</div>
+                    <div>{formatAvd(video.avdSeconds)}</div>
+                    <div>
+                      <span className={`rounded border px-2 py-0.5 text-xs font-medium ${tierColors[video.tier]}`}>
+                        {video.score}
+                      </span>
                     </div>
                   </div>
-
-                  <div className="mt-4 grid gap-3 text-sm md:grid-cols-4">
-                    <MetricCell label="Views" value={formatLongNumber(item.views)} />
-                    <MetricCell label="Watch Hours" value={formatCompactNumber(item.watchHours)} />
-                    <MetricCell label="CTR" value={formatPercent(item.ctr)} />
-                    <MetricCell label="Avg. View Duration" value={`${item.avdMinutes.toFixed(1)} min`} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Demo Summary</CardTitle>
-            <CardDescription>Static route-level payloads preserve product intent without backend complexity.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <SummaryRow label="Videos in sample" value={String(data?.summary.totalVideos ?? 0)} />
-            <SummaryRow label="Top format" value={data?.summary.topFormat ?? '--'} />
-            <SummaryRow label="Strongest theme" value={data?.summary.strongestTheme ?? '--'} />
-            <SummaryRow label="Median CTR" value={data ? formatPercent(data.summary.medianCtr) : '--'} />
-
-            {bestVideo && (
-              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 text-emerald-900">
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">
-                  Best current signal
-                </div>
-                <div className="mt-2 text-base font-semibold">{bestVideo.title}</div>
-                <p className="mt-1 text-sm text-emerald-800">
-                  Highest visible {sortBy} in the current filtered set with a {bestVideo.format.toLowerCase()} package.
-                </p>
+                ))}
+              </div>
+            ) : (
+              <div className="p-8 text-center text-muted-foreground">
+                No videos match the current filters.
               </div>
             )}
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-function MetricCell({ label, value }: { label: string; value: string }) {
+function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="space-y-1 rounded-xl border border-border/60 bg-card/80 p-3">
-      <div className="text-xs uppercase tracking-[0.12em] text-muted-foreground">{label}</div>
-      <div className="text-base font-semibold tracking-tight">{value}</div>
-    </div>
-  )
-}
-
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between border-b border-border/60 pb-2 last:border-b-0 last:pb-0">
-      <span>{label}</span>
-      <span className="font-medium text-foreground">{value}</span>
-    </div>
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+      </CardContent>
+    </Card>
   )
 }
