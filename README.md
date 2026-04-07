@@ -4,22 +4,23 @@ Public portfolio demo extracted from a larger private YouTube analytics product.
 
 ## Current Status
 
-Phase 1 is in progress.
+Phase 2 static data wiring is in place.
 
 What exists now:
 
 - standalone public repo
 - standalone local workspace alongside the private source repo
 - static shell with trimmed route map
+- route-level synthetic JSON payloads under `public/demo-data/`
+- typed demo-data loader layer
 - Vercel-ready SPA scaffold
-- public-doc placeholders for data schema and sanitization policy
+- public docs for data schema and sanitization policy
 
 What does not exist yet:
 
-- synthetic demo dataset
-- static data loaders
-- final portfolio copy
-- publish-safe first commit
+- route-level detail pages
+- richer synthetic fixture coverage
+- final portfolio copy and case-study framing
 
 ## Public Repo Rules
 

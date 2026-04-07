@@ -1,0 +1,36 @@
+{
+  "windowLabel": "Last 10 release weeks",
+  "summary": {
+    "averageWeeklyViews": 97240,
+    "averageWeeklyNetSubscribers": 185,
+    "bestWeekLabel": "W10",
+    "bestWeekViews": 128900,
+    "consistencyLabel": "Moderate upward trend"
+  },
+  "weeks": [
+    { "label": "W01", "views": 81200, "watchHours": 56100, "netSubscribers": 146, "releaseCount": 1 },
+    { "label": "W02", "views": 85400, "watchHours": 58900, "netSubscribers": 153, "releaseCount": 1 },
+    { "label": "W03", "views": 90300, "watchHours": 62400, "netSubscribers": 166, "releaseCount": 1 },
+    { "label": "W04", "views": 94600, "watchHours": 65900, "netSubscribers": 173, "releaseCount": 1 },
+    { "label": "W05", "views": 98700, "watchHours": 69200, "netSubscribers": 181, "releaseCount": 1 },
+    { "label": "W06", "views": 96300, "watchHours": 68100, "netSubscribers": 176, "releaseCount": 1 },
+    { "label": "W07", "views": 105200, "watchHours": 74400, "netSubscribers": 196, "releaseCount": 1 },
+    { "label": "W08", "views": 111500, "watchHours": 78100, "netSubscribers": 211, "releaseCount": 1 },
+    { "label": "W09", "views": 117300, "watchHours": 82300, "netSubscribers": 225, "releaseCount": 1 },
+    { "label": "W10", "views": 128900, "watchHours": 90200, "netSubscribers": 247, "releaseCount": 2 }
+  ],
+  "focusAreas": [
+    {
+      "title": "Double down on sleep-led packages",
+      "detail": "The strongest weekly jumps coincide with releases that lean into the brand's most legible use case."
+    },
+    {
+      "title": "Protect visual consistency",
+      "detail": "The weakest weeks are still solid on watch depth, but they underperform on click intent when the thumbnail system drifts."
+    },
+    {
+      "title": "Treat pacing as a growth lever",
+      "detail": "The strongest week in the window includes a two-release sequence, suggesting the audience can absorb a slightly more aggressive cadence."
+    }
+  ]
+}

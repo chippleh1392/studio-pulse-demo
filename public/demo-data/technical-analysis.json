@@ -1,0 +1,40 @@
+{
+  "timeframeLabel": "12-week synthetic sample",
+  "rating": {
+    "label": "Bullish",
+    "score": 78,
+    "summary": "Momentum is healthy, baseline performance is rising, and recent releases are sustaining stronger-than-average watch depth."
+  },
+  "signals": [
+    {
+      "name": "Trend",
+      "status": "Bullish",
+      "detail": "Weekly view velocity has established a clear higher-high pattern across the recent sample."
+    },
+    {
+      "name": "Momentum",
+      "status": "Bullish",
+      "detail": "The last three releases outperformed the prior trailing average on both reach and watch hours."
+    },
+    {
+      "name": "Conviction",
+      "status": "Neutral",
+      "detail": "Performance remains concentrated in a narrow set of packaging choices, so creative breadth is still a risk."
+    },
+    {
+      "name": "Volatility",
+      "status": "Controlled",
+      "detail": "Weekly variance exists, but the downside weeks are still above the older local baseline."
+    }
+  ],
+  "supportLevels": [
+    { "label": "Base support", "value": "90K weekly views" },
+    { "label": "Momentum threshold", "value": "105K weekly views" },
+    { "label": "Breakout zone", "value": "120K+ weekly views" }
+  ],
+  "actionBias": [
+    "Keep the highest-performing visual system stable for the next release block.",
+    "Test one adjacent concept inside the winning package before broadening the content mix.",
+    "Use two-release clusters selectively when the top theme is already validated."
+  ]
+}

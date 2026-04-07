@@ -1,0 +1,65 @@
+{
+  "headlineMetrics": [
+    {
+      "id": "views",
+      "label": "Total Views",
+      "value": 1284400,
+      "display": "1.28M",
+      "context": "Lifetime",
+      "changeLabel": "+18% vs prior quarter"
+    },
+    {
+      "id": "watchHours",
+      "label": "Watch Hours",
+      "value": 906200,
+      "display": "906K",
+      "context": "Lifetime",
+      "changeLabel": "+12% vs prior quarter"
+    },
+    {
+      "id": "subscribers",
+      "label": "Subscribers",
+      "value": 42300,
+      "display": "42.3K",
+      "context": "Current total",
+      "changeLabel": "+2.1K net in last 90 days"
+    },
+    {
+      "id": "ctr",
+      "label": "Avg. CTR",
+      "value": 5.8,
+      "display": "5.8%",
+      "context": "Weighted reach",
+      "changeLabel": "Stable above demo baseline"
+    }
+  ],
+  "trendWindowLabel": "Last 12 weeks",
+  "weeklyTrend": [
+    { "label": "W01", "views": 78000, "watchHours": 55200, "subscribers": 130 },
+    { "label": "W02", "views": 81200, "watchHours": 57800, "subscribers": 142 },
+    { "label": "W03", "views": 86500, "watchHours": 60100, "subscribers": 151 },
+    { "label": "W04", "views": 90200, "watchHours": 62400, "subscribers": 168 },
+    { "label": "W05", "views": 94800, "watchHours": 66000, "subscribers": 176 },
+    { "label": "W06", "views": 92100, "watchHours": 64800, "subscribers": 170 },
+    { "label": "W07", "views": 99500, "watchHours": 69800, "subscribers": 185 },
+    { "label": "W08", "views": 101200, "watchHours": 71300, "subscribers": 191 },
+    { "label": "W09", "views": 106900, "watchHours": 74500, "subscribers": 204 },
+    { "label": "W10", "views": 109400, "watchHours": 77100, "subscribers": 211 },
+    { "label": "W11", "views": 114800, "watchHours": 79900, "subscribers": 224 },
+    { "label": "W12", "views": 118600, "watchHours": 82400, "subscribers": 236 }
+  ],
+  "storyHighlights": [
+    {
+      "title": "Packaging consistency is compounding",
+      "detail": "Recent uploads with a repeated visual system are outperforming the prior mixed package set on both CTR and first-week velocity."
+    },
+    {
+      "title": "Long-form retention is the differentiator",
+      "detail": "The strongest uploads are not just winning on reach. They are sustaining watch depth relative to the channel baseline."
+    },
+    {
+      "title": "The next opportunity is release pacing",
+      "detail": "Growth is positive, but the weekly view curve suggests the brand still under-utilizes its highest-performing format window."
+    }
+  ]
+}

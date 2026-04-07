@@ -1,0 +1,106 @@
+{
+  "items": [
+    {
+      "id": "vid_001",
+      "title": "Midnight Letters: Ambient Focus Session",
+      "publishedAt": "2026-03-28",
+      "views": 148200,
+      "watchHours": 102400,
+      "ctr": 6.4,
+      "avdMinutes": 38.2,
+      "format": "Long-form session",
+      "theme": "Night focus",
+      "score": 92
+    },
+    {
+      "id": "vid_002",
+      "title": "Rain Window Study Room",
+      "publishedAt": "2026-03-17",
+      "views": 131800,
+      "watchHours": 91300,
+      "ctr": 6.1,
+      "avdMinutes": 36.6,
+      "format": "Long-form session",
+      "theme": "Study ambience",
+      "score": 89
+    },
+    {
+      "id": "vid_003",
+      "title": "Soft Lantern Piano for Deep Work",
+      "publishedAt": "2026-03-05",
+      "views": 118400,
+      "watchHours": 85100,
+      "ctr": 5.9,
+      "avdMinutes": 34.8,
+      "format": "Instrumental loop",
+      "theme": "Deep work",
+      "score": 84
+    },
+    {
+      "id": "vid_004",
+      "title": "Afterglow Journaling Mix",
+      "publishedAt": "2026-02-20",
+      "views": 104900,
+      "watchHours": 69900,
+      "ctr": 5.3,
+      "avdMinutes": 31.1,
+      "format": "Mood playlist",
+      "theme": "Reflection",
+      "score": 77
+    },
+    {
+      "id": "vid_005",
+      "title": "Quiet Harbor Sleep Soundscape",
+      "publishedAt": "2026-02-11",
+      "views": 161500,
+      "watchHours": 124600,
+      "ctr": 6.8,
+      "avdMinutes": 42.9,
+      "format": "Sleep soundscape",
+      "theme": "Sleep",
+      "score": 95
+    },
+    {
+      "id": "vid_006",
+      "title": "Golden Hour Writing Atmosphere",
+      "publishedAt": "2026-01-29",
+      "views": 88300,
+      "watchHours": 59200,
+      "ctr": 4.9,
+      "avdMinutes": 28.4,
+      "format": "Writing ambience",
+      "theme": "Creative flow",
+      "score": 72
+    },
+    {
+      "id": "vid_007",
+      "title": "Lantern Library: Volume Two",
+      "publishedAt": "2026-01-14",
+      "views": 96600,
+      "watchHours": 67300,
+      "ctr": 5.1,
+      "avdMinutes": 29.7,
+      "format": "Long-form session",
+      "theme": "Library ambience",
+      "score": 74
+    },
+    {
+      "id": "vid_008",
+      "title": "Dawn Sketchbook Background Loop",
+      "publishedAt": "2026-01-03",
+      "views": 74200,
+      "watchHours": 48800,
+      "ctr": 4.5,
+      "avdMinutes": 26.2,
+      "format": "Creative ambience",
+      "theme": "Morning routine",
+      "score": 68
+    }
+  ],
+  "summary": {
+    "totalVideos": 8,
+    "topFormat": "Long-form session",
+    "strongestTheme": "Sleep",
+    "medianCtr": 5.6
+  }
+}

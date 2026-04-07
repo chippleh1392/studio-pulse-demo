@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { BarChart3, FileStack, LayoutDashboard, LineChart, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getAppShellData } from '@/lib/demo-client/client'
+import type { AppShellData } from '@/lib/demo-client/types'
 
 type NavItem = {
   label: string
@@ -18,6 +21,29 @@ const navItems: NavItem[] = [
 ]
 
 export function AppLayout() {
+  const [shellData, setShellData] = useState<AppShellData | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    getAppShellData()
+      .then((data) => {
+        if (!cancelled) setShellData(data)
+      })
+      .catch(() => {
+        if (!cancelled) setShellData(null)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const appName = shellData?.app.name ?? 'Studio Pulse Demo'
+  const channelName = shellData?.channel.name ?? 'Northstar Studio'
+  const channelSubtitle =
+    shellData?.channel.subtitle ?? 'Synthetic analytics workspace for a calm long-form content brand'
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
@@ -27,15 +53,15 @@ export function AppLayout() {
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-sm font-semibold tracking-tight text-slate-800">Studio Pulse Demo</div>
-              <div className="text-xs text-slate-700/75">Public portfolio extraction</div>
+              <div className="text-sm font-semibold tracking-tight text-slate-800">{appName}</div>
+              <div className="text-xs text-slate-700/75">{channelName}</div>
             </div>
           </div>
 
           <div className="mt-6 rounded-2xl border border-white/45 bg-white/40 p-4 text-sm text-slate-800 shadow-[0_10px_26px_rgba(45,57,94,0.08)] backdrop-blur-sm">
-            <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Phase 1</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Phase 2</div>
             <p className="mt-2 leading-6">
-              Static shell only. Routes, branding, deployment config, and public-doc scaffolding are in place.
+              Static demo foundation with route-level JSON payloads. No backend, no private exports, and no local-ops surface.
             </p>
           </div>
 
@@ -66,12 +92,10 @@ export function AppLayout() {
                 <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Demo Dataset Policy
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  This repo will ship with a synthetic, sanitized dataset and no connection to the private local stack.
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{channelSubtitle}</p>
               </div>
               <div className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
-                No backend in Phase 1
+                Static demo data
               </div>
             </div>
           </header>
