@@ -29,6 +29,14 @@ import {
   SidebarProvider,
 } from '@/components/ui/sidebar'
 import { DateRangeSelector } from '@/components/charts/DateRangeSelector'
+import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { getAppShellData } from '@/lib/demo-client/client'
 import type { AppShellData } from '@/lib/demo-client/types'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
@@ -88,6 +96,9 @@ export function AppLayout() {
   const { globalTimeframeDays, setGlobalTimeframeDays, timeframeLabel, buildPathWithTimeframe } =
     useGlobalTimeframe()
   const [shellData, setShellData] = useState<AppShellData | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -103,6 +114,17 @@ export function AppLayout() {
     return () => {
       cancelled = true
     }
+  }, [])
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault()
+        setSearchOpen((open) => !open)
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
 
   const searchablePages = useMemo(
@@ -128,6 +150,73 @@ export function AppLayout() {
 
   return (
     <SidebarProvider>
+      <GlobalSearchModal
+        open={searchOpen}
+        onOpenChange={setSearchOpen}
+        channelName={channelName}
+        sections={navSections}
+        buildPathWithTimeframe={buildPathWithTimeframe}
+      />
+
+      <Sheet open={notificationsOpen} onOpenChange={setNotificationsOpen}>
+        <SheetContent
+          side="right"
+          className="flex h-full w-full max-w-none flex-col gap-0 border-l border-border/80 bg-card p-0 shadow-xl sm:max-w-md"
+        >
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pb-8 pt-14">
+            <SheetHeader className="space-y-1.5 p-0 text-left">
+              <SheetTitle className="text-lg font-semibold tracking-tight">Notifications</SheetTitle>
+              <SheetDescription className="text-sm leading-relaxed">
+                Demo workspace alerts. Nothing is sent to a server in this build.
+              </SheetDescription>
+            </SheetHeader>
+            <ul className="mt-6 flex flex-col gap-3 text-sm">
+              <li className="rounded-lg border border-border/70 bg-muted/50 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+                <p className="font-medium text-foreground">Weekly digest ready</p>
+                <p className="mt-1 text-xs text-muted-foreground">Synthetic summary for {timeframeLabel}</p>
+              </li>
+              <li className="rounded-lg border border-border/70 bg-muted/50 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+                <p className="font-medium text-foreground">Dataset refresh</p>
+                <p className="mt-1 text-xs text-muted-foreground">Static demo data as of {dataAsOf}</p>
+              </li>
+              <li className="rounded-lg border border-dashed border-border/90 bg-background/80 px-4 py-3 text-muted-foreground">
+                No actionable items — this is a public demo shell.
+              </li>
+            </ul>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <SheetContent
+          side="right"
+          className="flex h-full w-full max-w-none flex-col gap-0 border-l border-border/80 bg-card p-0 shadow-xl sm:max-w-md"
+        >
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pb-8 pt-14">
+            <SheetHeader className="space-y-1.5 p-0 text-left">
+              <SheetTitle className="text-lg font-semibold tracking-tight">Workspace settings</SheetTitle>
+              <SheetDescription className="text-sm leading-relaxed">
+                Preferences for this demo session only; they are not persisted.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-6 flex flex-col gap-3 text-sm">
+              <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-border/70 bg-background/90 px-4 py-3 shadow-sm">
+                <span className="font-medium text-foreground">Compact density</span>
+                <input type="checkbox" className="accent-primary size-4 shrink-0" disabled aria-disabled />
+              </label>
+              <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-border/70 bg-background/90 px-4 py-3 shadow-sm">
+                <span className="font-medium text-foreground">Show demo banners</span>
+                <input type="checkbox" defaultChecked className="accent-primary size-4 shrink-0" readOnly />
+              </label>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Full account linking, API keys, and email notifications are intentionally omitted in the
+                public demo.
+              </p>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
       <Sidebar className="border-r-0">
         <SidebarHeader className="bg-[#bedce9] px-4 py-4">
           <div className="flex items-center gap-3">
@@ -182,13 +271,12 @@ export function AppLayout() {
             </div>
             <button
               type="button"
+              onClick={() => setSearchOpen(true)}
               className="mx-auto flex w-full max-w-2xl items-center gap-2 rounded-md border border-slate-400/45 bg-white/40 px-3 py-1.5 text-slate-700 md:mx-0 md:w-[520px]"
               aria-label="Search pages"
             >
               <Search className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate text-xs">
-                Search pages, charts, and demo surfaces...
-              </span>
+              <span className="truncate text-xs">Search pages, channels, or videos...</span>
               <span className="ml-auto hidden rounded border border-slate-400/45 bg-white/45 px-1.5 py-0.5 text-[10px] font-medium md:inline">
                 Ctrl/Cmd+K
               </span>
@@ -196,6 +284,7 @@ export function AppLayout() {
             <div className="hidden items-center gap-1.5 md:flex">
               <button
                 type="button"
+                onClick={() => setNotificationsOpen(true)}
                 className="relative inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
                 aria-label="Notifications"
               >
@@ -203,6 +292,7 @@ export function AppLayout() {
               </button>
               <button
                 type="button"
+                onClick={() => setSettingsOpen(true)}
                 className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
                 aria-label="Settings"
               >

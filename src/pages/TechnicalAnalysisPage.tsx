@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { Activity, Gauge, Layers, SlidersHorizontal, Sparkles } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TimeSeriesChart } from '@/components/charts/TimeSeriesChart'
 import { DateRangeSelector } from '@/components/charts/DateRangeSelector'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getTechnicalAnalysisData } from '@/lib/demo-client/client'
 import type {
-  TechnicalAnalysisData,
   TechnicalAnalysisMetric,
   TechnicalAnalysisPoint,
 } from '@/lib/demo-client/types'
@@ -76,8 +76,10 @@ function TogglePill({
 
 export default function TechnicalAnalysisPage() {
   const { globalTimeframeDays, setGlobalTimeframeDays, timeframeLabel } = useGlobalTimeframe()
-  const [data, setData] = useState<TechnicalAnalysisData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useAsyncResource(
+    'technical-analysis',
+    getTechnicalAnalysisData
+  )
   const [metricId, setMetricId] = useState('views')
   const [activeOverlays, setActiveOverlays] = useState<Record<string, boolean>>({
     smaShort: true,
@@ -96,27 +98,6 @@ export default function TechnicalAnalysisPage() {
     roc: false,
     zscore: false,
   })
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getTechnicalAnalysisData()
-      .then((result) => {
-        if (cancelled) return
-        setData(result)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setData(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   const availableMetrics = data?.metrics ?? []
   const selectedMetric: TechnicalAnalysisMetric | undefined =

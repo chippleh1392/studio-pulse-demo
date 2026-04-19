@@ -6,8 +6,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getVideosData } from '@/lib/demo-client/client'
-import type { DemoVideo, VideosData } from '@/lib/demo-client/types'
+import type { DemoVideo } from '@/lib/demo-client/types'
 
 type VideoTypeFilter = 'all' | 'videos' | 'live'
 type SortKey = 'publishedAt' | 'views' | 'watchHours' | 'ctr' | 'avdSeconds' | 'score'
@@ -82,34 +83,12 @@ function VideoThumbnail({ video }: { video: DemoVideo }) {
 }
 
 export default function VideosPage() {
-  const [data, setData] = useState<VideosData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useAsyncResource('videos', getVideosData)
   const [searchInput, setSearchInput] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [videoTypeFilter, setVideoTypeFilter] = useState<VideoTypeFilter>('all')
   const [sortKey, setSortKey] = useState<SortKey>('publishedAt')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getVideosData()
-      .then((result) => {
-        if (cancelled) return
-        setData(result)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setData(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   useEffect(() => {
     const timer = window.setTimeout(() => {

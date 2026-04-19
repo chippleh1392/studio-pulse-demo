@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
@@ -10,8 +10,9 @@ import { DateRangeSelector } from '@/components/charts/DateRangeSelector'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getCreativeData } from '@/lib/demo-client/client'
-import type { CreativeCombo, CreativeData, CreativeGroup } from '@/lib/demo-client/types'
+import type { CreativeCombo, CreativeGroup } from '@/lib/demo-client/types'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
 
 function formatNumber(num: number): string {
@@ -100,30 +101,11 @@ type GroupKind = 'theme' | 'thumbnail'
 
 export default function CreativePage() {
   const { globalTimeframeDays, setGlobalTimeframeDays, timeframeLabel, buildPathWithTimeframe } = useGlobalTimeframe()
-  const [data, setData] = useState<CreativeData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useAsyncResource('creative', getCreativeData)
   const [themeSearch, setThemeSearch] = useState('')
   const [thumbSearch, setThumbSearch] = useState('')
   const [videoSearch, setVideoSearch] = useState('')
   const [selectedGroup, setSelectedGroup] = useState<{ type: GroupKind; key: string } | null>(null)
-
-  useEffect(() => {
-    let isMounted = true
-    setIsLoading(true)
-    getCreativeData()
-      .then((result) => {
-        if (isMounted) setData(result)
-      })
-      .catch(() => {
-        if (isMounted) setData(null)
-      })
-      .finally(() => {
-        if (isMounted) setIsLoading(false)
-      })
-    return () => {
-      isMounted = false
-    }
-  }, [globalTimeframeDays])
 
   const filteredThemes = useMemo(() => {
     const term = themeSearch.trim().toLowerCase()

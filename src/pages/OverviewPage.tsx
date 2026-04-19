@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { DateRangeSelector } from '@/components/charts/DateRangeSelector'
 import { TimeSeriesChart } from '@/components/charts/TimeSeriesChart'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getDashboardData } from '@/lib/demo-client/client'
 import type { DashboardData } from '@/lib/demo-client/types'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
@@ -19,29 +20,7 @@ function getVisiblePoints(weeklyTrend: DashboardData['weeklyTrend'], days: numbe
 
 export default function OverviewPage() {
   const { globalTimeframeDays, setGlobalTimeframeDays, timeframeLabel } = useGlobalTimeframe()
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getDashboardData()
-      .then((data) => {
-        if (cancelled) return
-        setDashboardData(data)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setDashboardData(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const { data: dashboardData, isLoading } = useAsyncResource('dashboard', getDashboardData)
 
   const filteredTrend = useMemo(
     () => getVisiblePoints(dashboardData?.weeklyTrend ?? [], globalTimeframeDays),

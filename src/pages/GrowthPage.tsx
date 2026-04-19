@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import {
   AlertTriangle,
   ArrowDown,
@@ -16,8 +16,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TimeSeriesChart } from '@/components/charts/TimeSeriesChart'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getGrowthData } from '@/lib/demo-client/client'
-import type { GrowthData, GrowthWeek } from '@/lib/demo-client/types'
+import type { GrowthWeek } from '@/lib/demo-client/types'
 
 const WOW_TIMEFRAME_OPTIONS = [
   { label: '4w', value: 4 },
@@ -109,30 +110,8 @@ function MomentumGauge({ score, trend }: { score?: number; trend?: GrowthWeek['m
 }
 
 export default function GrowthPage() {
-  const [data, setData] = useState<GrowthData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useAsyncResource('growth', getGrowthData)
   const [wowTimeframe, setWowTimeframe] = useState<number>(12)
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getGrowthData()
-      .then((result) => {
-        if (cancelled) return
-        setData(result)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setData(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   const weeks = data?.weeks ?? []
   const wowWeeks = useMemo(() => (wowTimeframe > 0 ? weeks.slice(-wowTimeframe) : weeks), [weeks, wowTimeframe])

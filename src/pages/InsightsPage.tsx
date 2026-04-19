@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { getInsightsData } from '@/lib/demo-client/client'
-import type { InsightsData } from '@/lib/demo-client/types'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
 
 function formatNumber(num: number): string {
@@ -46,28 +45,7 @@ function ProgressBar({ value, color = 'bg-blue-500' }: { value: number; color?: 
 
 export default function InsightsPage() {
   const { buildPathWithTimeframe, timeframeLabel } = useGlobalTimeframe()
-  const [data, setData] = useState<InsightsData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-    setIsLoading(true)
-
-    getInsightsData()
-      .then((result) => {
-        if (isMounted) setData(result)
-      })
-      .catch(() => {
-        if (isMounted) setData(null)
-      })
-      .finally(() => {
-        if (isMounted) setIsLoading(false)
-      })
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  const { data, isLoading } = useAsyncResource('insights', getInsightsData)
 
   return (
     <div className="space-y-6">

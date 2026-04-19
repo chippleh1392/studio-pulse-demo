@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Eye, Flame, MousePointer, Rocket, Target, TrendingUp, Users, Zap } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getBreakoutData } from '@/lib/demo-client/client'
-import type { BreakoutCandidate, BreakoutData, ResurgenceCandidate } from '@/lib/demo-client/types'
+import type { BreakoutCandidate, ResurgenceCandidate } from '@/lib/demo-client/types'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
 
 function getSignalColor(value?: number): string {
@@ -221,29 +221,7 @@ function BreakoutSkeleton() {
 
 export default function BreakoutPage() {
   const { buildPathWithTimeframe } = useGlobalTimeframe()
-  const [data, setData] = useState<BreakoutData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getBreakoutData()
-      .then((result) => {
-        if (cancelled) return
-        setData(result)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setData(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const { data, isLoading } = useAsyncResource('breakout', getBreakoutData)
 
   const topBreakout = data?.candidates[0]
   const topResurgence = data?.resurgences[0]

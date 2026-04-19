@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AlertTriangle, CheckCircle2, RefreshCw, Tags, Target } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { getMetadataData } from '@/lib/demo-client/client'
-import type { MetadataData } from '@/lib/demo-client/types'
 
 function scoreClass(score: number): string {
   if (score >= 85) return 'text-emerald-600'
@@ -20,25 +20,8 @@ function severityClass(severity: 'warning' | 'critical'): string {
 }
 
 export default function MetadataPage() {
-  const [data, setData] = useState<MetadataData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading, reload } = useAsyncResource('metadata', getMetadataData)
   const [issuesOnly, setIssuesOnly] = useState(true)
-
-  const load = async () => {
-    setIsLoading(true)
-    try {
-      const result = await getMetadataData()
-      setData(result)
-    } catch {
-      setData(null)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    void load()
-  }, [])
 
   const visibleVideos = useMemo(() => {
     if (!data?.videos) return []
@@ -54,7 +37,7 @@ export default function MetadataPage() {
         contextLabel="Niche"
         contextValue={data?.channel.nicheSummary || 'Synthetic demo niche'}
         actions={
-          <Button variant="outline" size="sm" onClick={() => void load()} disabled={isLoading}>
+          <Button variant="outline" size="sm" onClick={reload} disabled={isLoading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>

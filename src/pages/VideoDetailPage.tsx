@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useAsyncResource } from '@/hooks/use-async-resource'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -6,7 +6,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { getVideosData } from '@/lib/demo-client/client'
-import type { DemoVideo } from '@/lib/demo-client/types'
 
 function formatDate(value: string): string {
   return new Date(`${value}T00:00:00`).toLocaleDateString('en-US', {
@@ -29,29 +28,10 @@ function formatLongNumber(value: number): string {
 
 export default function VideoDetailPage() {
   const { videoId } = useParams()
-  const [video, setVideo] = useState<DemoVideo | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let cancelled = false
-    setIsLoading(true)
-
-    getVideosData()
-      .then((result) => {
-        if (cancelled) return
-        setVideo(result.items.find((item) => item.id === videoId) ?? null)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setVideo(null)
-        setIsLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [videoId])
+  const { data: video, isLoading } = useAsyncResource(videoId ?? '', async () => {
+    const result = await getVideosData()
+    return result.items.find((item) => item.id === videoId) ?? null
+  })
 
   return (
     <div className="space-y-6">
