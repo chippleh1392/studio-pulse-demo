@@ -1,5 +1,6 @@
 import { useAsyncResource } from '@/hooks/use-async-resource'
 import { Link } from 'react-router-dom'
+import { ArrowRight, Compass, Globe2, Sparkles, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -55,6 +56,51 @@ export default function InsightsPage() {
         contextLabel="Timeframe"
         contextValue={timeframeLabel}
       />
+
+      <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+        <Card className="border-cyan-200/70 bg-[linear-gradient(135deg,rgba(231,249,255,0.98)_0%,rgba(239,245,255,0.96)_52%,rgba(247,241,255,0.95)_100%)]">
+          <CardHeader className="pb-3">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/70 bg-white/75 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-950/80">
+              Cross-Video Read
+            </div>
+            <CardTitle className="text-2xl tracking-tight text-slate-900">
+              Use this page when the question is bigger than one upload.
+            </CardTitle>
+            <CardDescription className="max-w-2xl text-slate-700">
+              This surface is for pattern recognition: where traffic comes from, who retains better, when viewers
+              show up, and what title structures are showing up repeatedly.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 md:grid-cols-3">
+            <InsightFocus icon={Globe2} title="Reach" detail="Traffic mix, geography, and device distribution." />
+            <InsightFocus icon={TrendingUp} title="Behavior" detail="Subscriber advantage and timing patterns." />
+            <InsightFocus icon={Sparkles} title="Packaging" detail="Title systems and recurring keyword structure." />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Best Next Moves</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <InsightJump
+              to={buildPathWithTimeframe('/growth')}
+              title="Momentum question"
+              detail="Open Growth if the issue is timing, week-over-week change, or anomaly follow-up."
+            />
+            <InsightJump
+              to={buildPathWithTimeframe('/creative')}
+              title="Packaging question"
+              detail="Open Creative if the pattern points to thumbnails, hooks, or title systems."
+            />
+            <InsightJump
+              to={buildPathWithTimeframe('/videos')}
+              title="Specific video question"
+              detail="Open Videos if you already know the candidate and need concrete package-level context."
+            />
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardHeader className="pb-3">
@@ -330,5 +376,40 @@ function MiniStat({ label, value }: { label: string; value: string }) {
       <p className="mb-1 text-xs text-muted-foreground">{label}</p>
       <p className="text-xl font-semibold">{value}</p>
     </div>
+  )
+}
+
+function InsightFocus({
+  icon: Icon,
+  title,
+  detail,
+}: {
+  icon: typeof Compass
+  title: string
+  detail: string
+}) {
+  return (
+    <div className="rounded-2xl border border-white/70 bg-white/75 p-4 shadow-sm">
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+        <Icon className="h-4 w-4" />
+      </span>
+      <p className="mt-4 text-sm font-semibold text-slate-900">{title}</p>
+      <p className="mt-1 text-xs leading-5 text-slate-600">{detail}</p>
+    </div>
+  )
+}
+
+function InsightJump({ to, title, detail }: { to: string; title: string; detail: string }) {
+  return (
+    <Link
+      to={to}
+      className="group block rounded-2xl border border-border/70 bg-background/75 p-4 text-sm transition hover:-translate-y-0.5 hover:bg-muted/35"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <p className="font-semibold text-foreground">{title}</p>
+        <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-foreground" />
+      </div>
+      <p className="mt-2 text-muted-foreground">{detail}</p>
+    </Link>
   )
 }

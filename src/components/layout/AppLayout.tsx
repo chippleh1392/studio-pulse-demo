@@ -37,8 +37,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { getAppShellData } from '@/lib/demo-client/client'
-import type { AppShellData } from '@/lib/demo-client/types'
+import { useAppShellData } from '@/hooks/use-demo-data'
 import { useGlobalTimeframe } from '@/lib/timeframe/globalTimeframe'
 import { cn } from '@/lib/utils'
 
@@ -95,26 +94,10 @@ function getChannelInitials(name: string): string {
 export function AppLayout() {
   const { globalTimeframeDays, setGlobalTimeframeDays, timeframeLabel, buildPathWithTimeframe } =
     useGlobalTimeframe()
-  const [shellData, setShellData] = useState<AppShellData | null>(null)
+  const { data: shellData } = useAppShellData()
   const [searchOpen, setSearchOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
-
-  useEffect(() => {
-    let cancelled = false
-
-    getAppShellData()
-      .then((data) => {
-        if (!cancelled) setShellData(data)
-      })
-      .catch(() => {
-        if (!cancelled) setShellData(null)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -274,6 +257,8 @@ export function AppLayout() {
               onClick={() => setSearchOpen(true)}
               className="mx-auto flex w-full max-w-2xl items-center gap-2 rounded-md border border-slate-400/45 bg-white/40 px-3 py-1.5 text-slate-700 md:mx-0 md:w-[520px]"
               aria-label="Search pages"
+              aria-haspopup="dialog"
+              aria-expanded={searchOpen}
             >
               <Search className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate text-xs">Search pages, channels, or videos...</span>
@@ -287,6 +272,8 @@ export function AppLayout() {
                 onClick={() => setNotificationsOpen(true)}
                 className="relative inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
                 aria-label="Notifications"
+                aria-haspopup="dialog"
+                aria-expanded={notificationsOpen}
               >
                 <Bell className="h-3.5 w-3.5" />
               </button>
@@ -295,6 +282,8 @@ export function AppLayout() {
                 onClick={() => setSettingsOpen(true)}
                 className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
                 aria-label="Settings"
+                aria-haspopup="dialog"
+                aria-expanded={settingsOpen}
               >
                 <Settings2 className="h-3.5 w-3.5" />
               </button>

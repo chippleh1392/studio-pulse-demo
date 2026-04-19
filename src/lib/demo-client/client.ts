@@ -10,16 +10,27 @@ import type {
   VideosData,
 } from '@/lib/demo-client/types'
 
+const demoDataCache = new Map<string, Promise<unknown>>()
+
 async function loadJson<T>(path: string): Promise<T> {
-  const response = await fetch(path, {
-    cache: 'no-store',
-  })
+  const cached = demoDataCache.get(path)
+  if (cached) return cached as Promise<T>
 
-  if (!response.ok) {
-    throw new Error(`Failed to load demo data: ${path} (${response.status})`)
-  }
+  const request = fetch(path, { cache: 'force-cache' })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load demo data: ${path} (${response.status})`)
+      }
 
-  return response.json()
+      return response.json() as Promise<T>
+    })
+    .catch((error) => {
+      demoDataCache.delete(path)
+      throw error
+    })
+
+  demoDataCache.set(path, request)
+  return request
 }
 
 export function getAppShellData() {

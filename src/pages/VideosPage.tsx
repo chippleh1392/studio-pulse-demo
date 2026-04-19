@@ -142,6 +142,9 @@ export default function VideosPage() {
     )
   }
 
+  const getAriaSort = (columnKey: SortKey): 'ascending' | 'descending' | 'none' =>
+    sortKey === columnKey ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'
+
   const hasActiveFilters = videoTypeFilter !== 'all' || Boolean(searchQuery)
 
   return (
@@ -190,6 +193,7 @@ export default function VideosPage() {
                     key={type}
                     type="button"
                     onClick={() => setVideoTypeFilter(type)}
+                    aria-pressed={videoTypeFilter === type}
                     className={`px-3 py-2 capitalize ${
                       videoTypeFilter === type ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
                     }`}
@@ -220,7 +224,11 @@ export default function VideosPage() {
               {videoTypeFilter !== 'all' && (
                 <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-sm text-primary">
                   {videoTypeFilter === 'videos' ? 'VOD only' : 'Live only'}
-                  <button type="button" onClick={() => setVideoTypeFilter('all')}>
+                  <button
+                    type="button"
+                    onClick={() => setVideoTypeFilter('all')}
+                    aria-label={`Remove ${videoTypeFilter === 'videos' ? 'VOD only' : 'Live only'} filter`}
+                  >
                     <X className="h-3 w-3" />
                   </button>
                 </span>
@@ -228,7 +236,14 @@ export default function VideosPage() {
               {searchQuery && (
                 <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-sm text-primary">
                   Search: {searchQuery}
-                  <button type="button" onClick={() => { setSearchInput(''); setSearchQuery('') }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchInput('')
+                      setSearchQuery('')
+                    }}
+                    aria-label="Clear search filter"
+                  >
                     <X className="h-3 w-3" />
                   </button>
                 </span>
@@ -246,85 +261,138 @@ export default function VideosPage() {
             </div>
           )}
 
-          <div className="overflow-hidden rounded-lg border">
-            <div className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 border-b bg-muted/50 p-4 text-sm font-medium items-center">
-              <div></div>
-              <div>Title</div>
-              <button type="button" onClick={() => handleSort('publishedAt')} className="text-left">
-                Published{getSortIcon('publishedAt')}
-              </button>
-              <button type="button" onClick={() => handleSort('views')} className="text-left">
-                Views{getSortIcon('views')}
-              </button>
-              <button type="button" onClick={() => handleSort('watchHours')} className="text-left">
-                Watch Time{getSortIcon('watchHours')}
-              </button>
-              <button type="button" onClick={() => handleSort('ctr')} className="text-left">
-                CTR{getSortIcon('ctr')}
-              </button>
-              <button type="button" onClick={() => handleSort('avdSeconds')} className="text-left">
-                AVD{getSortIcon('avdSeconds')}
-              </button>
-              <button type="button" onClick={() => handleSort('score')} className="text-left">
-                Score{getSortIcon('score')}
-              </button>
-            </div>
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="w-full min-w-[900px] border-collapse text-sm">
+              <caption className="sr-only">Video performance table with sortable metrics.</caption>
+              <colgroup>
+                <col className="w-[150px]" />
+                <col className="w-[32%]" />
+                <col className="w-[110px]" />
+                <col className="w-[90px]" />
+                <col className="w-[110px]" />
+                <col className="w-[80px]" />
+                <col className="w-[80px]" />
+                <col className="w-[90px]" />
+              </colgroup>
+              <thead className="border-b bg-muted/50 text-sm font-medium">
+                <tr>
+                  <th scope="col" className="p-4 text-left">
+                    <span className="sr-only">Thumbnail</span>
+                  </th>
+                  <th scope="col" className="p-4 text-left">
+                    Title
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('publishedAt')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('publishedAt')} className="text-left">
+                      Published{getSortIcon('publishedAt')}
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('views')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('views')} className="text-left">
+                      Views{getSortIcon('views')}
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('watchHours')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('watchHours')} className="text-left">
+                      Watch Time{getSortIcon('watchHours')}
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('ctr')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('ctr')} className="text-left">
+                      CTR{getSortIcon('ctr')}
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('avdSeconds')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('avdSeconds')} className="text-left">
+                      AVD{getSortIcon('avdSeconds')}
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort={getAriaSort('score')} className="p-4 text-left">
+                    <button type="button" onClick={() => handleSort('score')} className="text-left">
+                      Score{getSortIcon('score')}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
 
-            {isLoading ? (
-              <div className="divide-y">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div key={`video-skeleton-${index}`} className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 items-center p-4">
-                    <Skeleton className="h-[74px] w-[132px] rounded-lg" />
-                    <Skeleton className="h-5 w-full" />
-                    <Skeleton className="h-4 w-20" />
-                    <Skeleton className="h-4 w-14" />
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-10" />
-                    <Skeleton className="h-4 w-12" />
-                    <Skeleton className="h-5 w-14" />
-                  </div>
-                ))}
-              </div>
-            ) : displayedVideos.length > 0 ? (
-              <div className="divide-y">
-                {displayedVideos.map((video) => (
-                  <div key={video.id} className="grid grid-cols-[150px_1.2fr_110px_90px_110px_80px_80px_90px] gap-4 items-center p-4 text-sm">
-                    <Link to={`/videos/${video.id}`} className="block">
-                      <VideoThumbnail video={video} />
-                    </Link>
-                    <div className="min-w-0">
-                      <Link to={`/videos/${video.id}`} className="truncate font-medium text-primary hover:underline">
-                        {video.title}
-                      </Link>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{video.format}</span>
-                        <span>·</span>
-                        <span>{video.theme}</span>
-                        {video.isLive && (
-                          <span className="rounded border border-red-200 bg-red-500/10 px-1.5 py-0.5 font-semibold uppercase text-red-600">
-                            Live
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div>{formatDate(video.publishedAt)}</div>
-                    <div>{formatLongNumber(video.views)}</div>
-                    <div>{formatCompactNumber(Math.round(video.watchHours))}</div>
-                    <div>{formatPercent(video.ctr)}</div>
-                    <div>{formatAvd(video.avdSeconds)}</div>
-                    <div>
-                      <span className={`rounded border px-2 py-0.5 text-xs font-medium ${tierColors[video.tier]}`}>
-                        {video.score}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-8 text-center text-muted-foreground">
-                No videos match the current filters.
-              </div>
-            )}
+              {isLoading ? (
+                <tbody>
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <tr key={`video-skeleton-${index}`} className="border-b last:border-b-0">
+                      <td className="p-4">
+                        <Skeleton className="h-[74px] w-[132px] rounded-lg" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-5 w-full" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-4 w-20" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-4 w-14" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-4 w-16" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-4 w-10" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-4 w-12" />
+                      </td>
+                      <td className="p-4">
+                        <Skeleton className="h-5 w-14" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              ) : displayedVideos.length > 0 ? (
+                <tbody>
+                  {displayedVideos.map((video) => (
+                    <tr key={video.id} className="border-b last:border-b-0">
+                      <td className="p-4 align-middle">
+                        <Link to={`/videos/${video.id}`} className="block">
+                          <VideoThumbnail video={video} />
+                        </Link>
+                      </td>
+                      <th scope="row" className="min-w-0 p-4 text-left align-middle font-normal">
+                        <Link to={`/videos/${video.id}`} className="truncate font-medium text-primary hover:underline">
+                          {video.title}
+                        </Link>
+                        <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>{video.format}</span>
+                          <span>·</span>
+                          <span>{video.theme}</span>
+                          {video.isLive && (
+                            <span className="rounded border border-red-200 bg-red-500/10 px-1.5 py-0.5 font-semibold uppercase text-red-600">
+                              Live
+                            </span>
+                          )}
+                        </div>
+                      </th>
+                      <td className="p-4 align-middle">{formatDate(video.publishedAt)}</td>
+                      <td className="p-4 align-middle">{formatLongNumber(video.views)}</td>
+                      <td className="p-4 align-middle">{formatCompactNumber(Math.round(video.watchHours))}</td>
+                      <td className="p-4 align-middle">{formatPercent(video.ctr)}</td>
+                      <td className="p-4 align-middle">{formatAvd(video.avdSeconds)}</td>
+                      <td className="p-4 align-middle">
+                        <span className={`rounded border px-2 py-0.5 text-xs font-medium ${tierColors[video.tier]}`}>
+                          {video.score}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td colSpan={8} className="p-8 text-center text-muted-foreground">
+                      No videos match the current filters.
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+            </table>
           </div>
         </CardContent>
       </Card>

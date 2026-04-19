@@ -14,8 +14,8 @@ import type { LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandItem, CommandList } from '@/components/ui/command'
-import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { getVideosData } from '@/lib/demo-client/client'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
+import { useVideoSearchRows } from '@/hooks/use-demo-data'
 import { cn } from '@/lib/utils'
 
 export type SearchNavSection = {
@@ -52,29 +52,13 @@ export function GlobalSearchModal({
 }: GlobalSearchModalProps) {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
-  const [videoRows, setVideoRows] = useState<{ id: string; title: string }[]>([])
+  const { rows: videoRows } = useVideoSearchRows()
 
   useEffect(() => {
     if (!open) {
       setSearch('')
     }
   }, [open])
-
-  useEffect(() => {
-    let cancelled = false
-    getVideosData()
-      .then((data) => {
-        if (!cancelled) {
-          setVideoRows(data.items.map((v) => ({ id: v.id, title: v.title })))
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setVideoRows([])
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   const searchTrim = search.trim()
   const videoQueryOk = searchTrim.length >= 2
@@ -100,6 +84,9 @@ export function GlobalSearchModal({
         )}
       >
         <DialogTitle className="sr-only">Search workspace</DialogTitle>
+        <DialogDescription className="sr-only">
+          Search pages, channels, and videos in the demo workspace.
+        </DialogDescription>
 
         <Command shouldFilter className="rounded-2xl bg-card">
           <div className="flex items-center gap-3 border-b border-border px-5 py-3.5">
@@ -109,6 +96,7 @@ export function GlobalSearchModal({
                 value={search}
                 onValueChange={setSearch}
                 placeholder="Search pages, channels, or videos..."
+                aria-label="Search workspace"
                 className="placeholder:text-muted-foreground w-full border-0 bg-transparent py-1 text-base outline-none"
               />
             </div>

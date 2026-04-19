@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
+import { ReactEChartsCore, echarts } from '@/lib/echarts/core'
 
 type TimeSeriesValue = number | null
 type TimeSeriesPoint = { date: string; value: TimeSeriesValue }
@@ -56,7 +56,7 @@ export function TimeSeriesChart({
   style,
   verticalMarkers = [],
 }: TimeSeriesChartProps) {
-  const chartRef = useRef<InstanceType<typeof ReactECharts> | null>(null)
+  const chartRef = useRef<InstanceType<typeof ReactEChartsCore> | null>(null)
 
   const normalizedSeries =
     series.length > 0
@@ -226,8 +226,9 @@ export function TimeSeriesChart({
   }
 
   return (
-    <ReactECharts
+    <ReactEChartsCore
       ref={chartRef}
+      echarts={echarts}
       option={option}
       style={{ height: '100%', width: '100%', ...style }}
       className={className}
