@@ -13,7 +13,14 @@ import {
 import type { LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Command, CommandEmpty, CommandItem, CommandList } from '@/components/ui/command'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { useVideoSearchRows } from '@/hooks/use-demo-data'
 import { cn } from '@/lib/utils'
@@ -61,12 +68,34 @@ export function GlobalSearchModal({
   }, [open])
 
   const searchTrim = search.trim()
+  const searchQuery = searchTrim.toLowerCase()
   const videoQueryOk = searchTrim.length >= 2
+  const filteredSections = useMemo(() => {
+    return sections
+      .map((section) => ({
+        ...section,
+        items: section.items.filter((item) => {
+          if (!searchQuery) return true
+          return [item.title, section.label, item.path].some((value) => value.toLowerCase().includes(searchQuery))
+        }),
+      }))
+      .filter((section) => section.items.length > 0)
+  }, [searchQuery, sections])
+
+  const channelMatches = useMemo(() => {
+    if (!searchQuery) return true
+    return ['channel', channelName].some((value) => value.toLowerCase().includes(searchQuery))
+  }, [channelName, searchQuery])
+
   const filteredVideos = useMemo(() => {
     if (!videoQueryOk) return []
-    const q = searchTrim.toLowerCase()
-    return videoRows.filter((v) => v.title.toLowerCase().includes(q) || v.id.toLowerCase().includes(q))
-  }, [searchTrim, videoQueryOk, videoRows])
+    return videoRows.filter((v) => v.title.toLowerCase().includes(searchQuery) || v.id.toLowerCase().includes(searchQuery))
+  }, [searchQuery, videoQueryOk, videoRows])
+
+  const resultCount =
+    filteredSections.reduce((sum, section) => sum + section.items.length, 0) +
+    (channelMatches ? 1 : 0) +
+    filteredVideos.length
 
   const go = (path: string) => {
     navigate(buildPathWithTimeframe(path))
@@ -88,7 +117,7 @@ export function GlobalSearchModal({
           Search pages, channels, and videos in the demo workspace.
         </DialogDescription>
 
-        <Command shouldFilter className="rounded-2xl bg-card">
+        <Command shouldFilter={false} className="rounded-2xl bg-card">
           <div className="flex items-center gap-3 border-b border-border px-5 py-3.5">
             <Search className="size-4 shrink-0 text-muted-foreground opacity-70" aria-hidden />
             <div className="min-w-0 flex-1" cmdk-input-wrapper="">
@@ -117,54 +146,70 @@ export function GlobalSearchModal({
           </div>
 
           <CommandList className="max-h-[min(520px,calc(100vh-8rem))] overflow-y-auto p-0">
-            <CommandEmpty className="py-10 text-sm text-muted-foreground">No results found.</CommandEmpty>
-
-            <SectionHeading icon={Layers} label="PAGES" />
-            <div className="px-3 pb-2 sm:px-4">
-              {sections.map((section) =>
-                section.items.map((item) => (
-                  <CommandItem
-                    key={item.path}
-                    value={`page ${item.title} ${section.label} ${item.path}`}
-                    keywords={[item.title, section.label, item.path]}
-                    onSelect={() => go(item.path)}
-                    className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5"
-                  >
-                    <FileText className="size-4 shrink-0 opacity-60" />
-                    <span className="min-w-0 flex-1 truncate text-sm">{item.title}</span>
-                    <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                      {section.label.toUpperCase()}
-                    </span>
-                  </CommandItem>
-                ))
-              )}
-            </div>
-
-            <div className="border-t border-border/60" />
-
-            <SectionHeading icon={Users} label="CHANNELS" />
-            <div className="px-3 pb-2 sm:px-4">
-              <CommandItem
-                value={`channel ${channelName}`}
-                keywords={[channelName, 'channel']}
-                onSelect={() => go('/')}
-                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5"
+            {filteredSections.length > 0 && (
+              <CommandGroup
+                heading={
+                  <SectionHeading icon={Layers} label="PAGES" />
+                }
+                className="px-3 pb-2 sm:px-4"
               >
-                <Users className="size-4 shrink-0 opacity-60" />
-                <span className="min-w-0 flex-1 truncate text-sm">{channelName}</span>
-              </CommandItem>
-            </div>
+                {filteredSections.flatMap((section) =>
+                  section.items.map((item) => (
+                    <CommandItem
+                      key={item.path}
+                      value={`page ${item.title} ${section.label} ${item.path}`}
+                      keywords={[item.title, section.label, item.path]}
+                      onSelect={() => go(item.path)}
+                      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5"
+                    >
+                      <FileText className="size-4 shrink-0 opacity-60" />
+                      <span className="min-w-0 flex-1 truncate text-sm">{item.title}</span>
+                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        {section.label.toUpperCase()}
+                      </span>
+                    </CommandItem>
+                  ))
+                )}
+              </CommandGroup>
+            )}
 
-            <div className="border-t border-border/60" />
+            {filteredSections.length > 0 && <CommandSeparator className="border-t border-border/60" />}
 
-            <SectionHeading icon={Video} label="VIDEOS" />
-            <div className="px-3 pb-3 sm:px-4">
+            {channelMatches && (
+              <CommandGroup
+                heading={
+                  <SectionHeading icon={Users} label="CHANNELS" />
+                }
+                className="px-3 pb-2 sm:px-4"
+              >
+                <CommandItem
+                  value={`channel ${channelName}`}
+                  keywords={[channelName, 'channel']}
+                  onSelect={() => go('/')}
+                  className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5"
+                >
+                  <Users className="size-4 shrink-0 opacity-60" />
+                  <span className="min-w-0 flex-1 truncate text-sm">{channelName}</span>
+                </CommandItem>
+              </CommandGroup>
+            )}
+
+            {(filteredSections.length > 0 || channelMatches) && <CommandSeparator className="border-t border-border/60" />}
+
+            <CommandGroup
+              heading={
+                <SectionHeading icon={Video} label="VIDEOS" />
+              }
+              className="px-3 pb-3 sm:px-4"
+            >
               {!videoQueryOk ? (
-                <p className="px-2 pb-1 text-xs leading-relaxed text-muted-foreground sm:px-1">
+                <CommandItem value="video-search-hint" disabled className="px-2 py-2 text-xs text-muted-foreground sm:px-1">
                   Type at least 2 characters to search videos.
-                </p>
+                </CommandItem>
               ) : filteredVideos.length === 0 ? (
-                <p className="px-2 pb-1 text-xs text-muted-foreground sm:px-1">No videos match your search.</p>
+                <CommandItem value="video-search-empty" disabled className="px-2 py-2 text-xs text-muted-foreground sm:px-1">
+                  No videos match your search.
+                </CommandItem>
               ) : (
                 filteredVideos.map((video) => (
                   <CommandItem
@@ -179,7 +224,11 @@ export function GlobalSearchModal({
                   </CommandItem>
                 ))
               )}
-            </div>
+            </CommandGroup>
+
+            {resultCount === 0 && (
+              <CommandEmpty className="py-10 text-sm text-muted-foreground">No results found.</CommandEmpty>
+            )}
           </CommandList>
         </Command>
 
