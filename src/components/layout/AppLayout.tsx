@@ -27,6 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { DateRangeSelector } from '@/components/charts/DateRangeSelector'
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal'
@@ -98,6 +99,8 @@ export function AppLayout() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [compactDensity, setCompactDensity] = useState(false)
+  const [showDemoBanners, setShowDemoBanners] = useState(true)
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -185,15 +188,25 @@ export function AppLayout() {
             <div className="mt-6 flex flex-col gap-3 text-sm">
               <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-border/70 bg-background/90 px-4 py-3 shadow-sm">
                 <span className="font-medium text-foreground">Compact density</span>
-                <input type="checkbox" className="accent-primary size-4 shrink-0" disabled aria-disabled />
+                <input
+                  type="checkbox"
+                  className="accent-primary size-4 shrink-0"
+                  checked={compactDensity}
+                  onChange={(event) => setCompactDensity(event.target.checked)}
+                />
               </label>
               <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-border/70 bg-background/90 px-4 py-3 shadow-sm">
                 <span className="font-medium text-foreground">Show demo banners</span>
-                <input type="checkbox" defaultChecked className="accent-primary size-4 shrink-0" readOnly />
+                <input
+                  type="checkbox"
+                  className="accent-primary size-4 shrink-0"
+                  checked={showDemoBanners}
+                  onChange={(event) => setShowDemoBanners(event.target.checked)}
+                />
               </label>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Full account linking, API keys, and email notifications are intentionally omitted in the
-                public demo.
+                Session-only preferences. Compact density tightens page padding; banners can be hidden for
+                cleaner screenshots. Full account linking is intentionally omitted in the public demo.
               </p>
             </div>
           </div>
@@ -247,15 +260,19 @@ export function AppLayout() {
       </Sidebar>
       <SidebarInset className="bg-background shadow-none">
         <div className="flex min-h-screen flex-1 flex-col bg-transparent">
-          <div className="flex h-11 items-center justify-between border-b border-border/55 bg-[linear-gradient(90deg,#bedce9_0%,#bdd4e5_44%,#c9b8e4_100%)] px-4 md:px-8">
-            <div className="hidden items-center gap-2 text-xs font-semibold text-muted-foreground md:flex">
+          <div className="flex h-11 items-center gap-2 border-b border-border/55 bg-[linear-gradient(90deg,#bedce9_0%,#bdd4e5_44%,#c9b8e4_100%)] px-3 md:gap-3 md:px-8">
+            <SidebarTrigger
+              className="size-8 shrink-0 text-slate-700 hover:bg-white/45 md:hidden"
+              aria-label="Open navigation menu"
+            />
+            <div className="hidden min-w-0 items-center gap-2 text-xs font-semibold text-muted-foreground md:flex">
               <span className="rounded bg-white/45 px-2 py-0.5 text-slate-700">Workspace</span>
               <span className="truncate">{channelName}</span>
             </div>
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="mx-auto flex w-full max-w-2xl items-center gap-2 rounded-md border border-slate-400/45 bg-white/40 px-3 py-1.5 text-slate-700 md:mx-0 md:w-[520px]"
+              className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-slate-400/45 bg-white/40 px-3 py-1.5 text-slate-700 hover:bg-white/55 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 md:mx-auto md:max-w-2xl md:flex-initial md:w-[520px]"
               aria-label="Search pages"
               aria-haspopup="dialog"
               aria-expanded={searchOpen}
@@ -266,11 +283,11 @@ export function AppLayout() {
                 Ctrl/Cmd+K
               </span>
             </button>
-            <div className="hidden items-center gap-1.5 md:flex">
+            <div className="flex shrink-0 items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => setNotificationsOpen(true)}
-                className="relative inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
+                className="relative inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 md:h-7 md:w-7"
                 aria-label="Notifications"
                 aria-haspopup="dialog"
                 aria-expanded={notificationsOpen}
@@ -280,7 +297,7 @@ export function AppLayout() {
               <button
                 type="button"
                 onClick={() => setSettingsOpen(true)}
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-400/45 bg-white/45 text-slate-700 hover:bg-white/70 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 md:h-7 md:w-7"
                 aria-label="Settings"
                 aria-haspopup="dialog"
                 aria-expanded={settingsOpen}
@@ -289,7 +306,12 @@ export function AppLayout() {
               </button>
             </div>
           </div>
-          <header className="flex flex-col gap-4 border-b border-border/70 bg-card px-8 py-5">
+          <header
+            className={cn(
+              'flex flex-col border-b border-border/70 bg-card px-4 md:px-8',
+              compactDensity ? 'gap-2 py-3' : 'gap-4 py-5'
+            )}
+          >
             <div className="flex flex-col gap-1">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                 Analytics overview
@@ -330,16 +352,18 @@ export function AppLayout() {
                 </div>
               </div>
             </div>
-            <div className="flex items-start gap-3 rounded-xl border border-emerald-200/70 bg-emerald-50/65 px-4 py-3 text-sm text-emerald-950">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
-              <div className="space-y-1">
-                <p className="font-medium">Public demo mode</p>
-                <p className="text-emerald-900/80">
-                  This build keeps the original analytics shell but reads only synthetic route-level
-                  JSON. No private exports, channel auth, or local operations are present.
-                </p>
+            {showDemoBanners ? (
+              <div className="flex items-start gap-3 rounded-xl border border-emerald-200/70 bg-emerald-50/65 px-4 py-3 text-sm text-emerald-950">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
+                <div className="space-y-1">
+                  <p className="font-medium">Public demo mode</p>
+                  <p className="text-emerald-900/80">
+                    This build keeps the original analytics shell but reads only synthetic route-level
+                    JSON. No private exports, channel auth, or local operations are present.
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : null}
             <div className="hidden grid-cols-3 gap-3 text-xs text-muted-foreground lg:grid">
               {searchablePages.slice(0, 3).map((page) => (
                 <div key={page.path} className="rounded-lg border border-border/60 bg-background/75 px-3 py-2">
@@ -350,7 +374,7 @@ export function AppLayout() {
             </div>
             <p className="text-xs text-muted-foreground">{channelSubtitle}</p>
           </header>
-          <main className="flex-1 px-8 py-6">
+          <main className={cn('flex-1 px-4 md:px-8', compactDensity ? 'py-3' : 'py-6')}>
             <Outlet />
           </main>
         </div>

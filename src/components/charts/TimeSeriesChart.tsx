@@ -14,6 +14,7 @@ interface TimeSeriesChartProps {
     data: TimeSeriesPoint[]
   }[]
   title?: string
+  ariaLabel?: string
   color?: string
   loading?: boolean
   grid?: EChartsOption['grid']
@@ -41,6 +42,7 @@ export function TimeSeriesChart({
   data = [],
   series = [],
   title,
+  ariaLabel,
   color = '#3b82f6',
   loading = false,
   grid,
@@ -225,15 +227,25 @@ export function TimeSeriesChart({
         },
   }
 
+  const resolvedAriaLabel =
+    ariaLabel ??
+    (title
+      ? `${title} chart`
+      : normalizedSeries.length
+        ? `Time series chart: ${normalizedSeries.map((s) => s.name).join(', ')}`
+        : 'Time series chart')
+
   return (
-    <ReactEChartsCore
-      ref={chartRef}
-      echarts={echarts}
-      option={option}
-      style={{ height: '100%', width: '100%', ...style }}
-      className={className}
-      opts={{ renderer: 'canvas' }}
-      notMerge={true}
-    />
+    <div role="img" aria-label={resolvedAriaLabel} className="h-full w-full">
+      <ReactEChartsCore
+        ref={chartRef}
+        echarts={echarts}
+        option={option}
+        style={{ height: '100%', width: '100%', ...style }}
+        className={className}
+        opts={{ renderer: 'canvas' }}
+        notMerge={true}
+      />
+    </div>
   )
 }

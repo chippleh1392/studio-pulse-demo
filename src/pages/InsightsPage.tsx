@@ -35,10 +35,25 @@ function DiversityBadge({ index }: { index?: number }) {
   return <span className={`rounded-full px-2 py-1 text-xs font-medium ${color}`}>{label}</span>
 }
 
-function ProgressBar({ value, color = 'bg-blue-500' }: { value: number; color?: string }) {
-  const percentage = Math.min(value, 100)
+function ProgressBar({
+  value,
+  color = 'bg-blue-500',
+  label,
+}: {
+  value: number
+  color?: string
+  label?: string
+}) {
+  const percentage = Math.min(Math.max(value, 0), 100)
   return (
-    <div className="h-2 w-full rounded-full bg-muted">
+    <div
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(percentage)}
+      aria-label={label ?? 'Progress'}
+      className="h-2 w-full rounded-full bg-muted"
+    >
       <div className={`h-2 rounded-full ${color}`} style={{ width: `${percentage}%` }} />
     </div>
   )
@@ -322,7 +337,7 @@ export default function InsightsPage() {
               </div>
 
               <div>
-                <h4 className="mb-3 text-sm font-medium">Top Keywords</h4>
+                <h3 className="mb-3 text-sm font-medium">Top Keywords</h3>
                 <div className="flex flex-wrap gap-2">
                   {(data?.titleAnalysis.topKeywords ?? []).map((item) => (
                     <span key={item.keyword} className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">
@@ -333,20 +348,32 @@ export default function InsightsPage() {
               </div>
 
               <div>
-                <h4 className="mb-3 text-sm font-medium">Title Structure Types</h4>
+                <h3 className="mb-3 text-sm font-medium">Title Structure Types</h3>
                 <div className="space-y-2">
-                  {(data?.titleAnalysis.structureTypes ?? []).map((item) => (
-                    <div key={item.structure} className="flex items-center gap-3">
-                      <span className="w-32 text-sm capitalize">{item.structure.replace('_', ' ')}</span>
-                      <ProgressBar value={item.percentage} color="bg-purple-500" />
-                      <span className="w-20 text-sm text-muted-foreground">{item.count} ({item.percentage.toFixed(0)}%)</span>
-                    </div>
-                  ))}
+                  {(data?.titleAnalysis.structureTypes ?? []).map((item) => {
+                    const label = item.structure.replace('_', ' ')
+                    return (
+                      <div
+                        key={item.structure}
+                        className="grid grid-cols-[minmax(6rem,8rem)_1fr_minmax(4.5rem,6rem)] items-center gap-3"
+                      >
+                        <span className="truncate text-sm capitalize">{label}</span>
+                        <ProgressBar
+                          value={item.percentage}
+                          color="bg-purple-500"
+                          label={`${label}: ${item.percentage.toFixed(0)} percent`}
+                        />
+                        <span className="text-right text-sm tabular-nums text-muted-foreground">
+                          {item.count} ({item.percentage.toFixed(0)}%)
+                        </span>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
 
               <div>
-                <h4 className="mb-3 text-sm font-medium">Sample Titles</h4>
+                <h3 className="mb-3 text-sm font-medium">Sample Titles</h3>
                 <div className="space-y-2">
                   {(data?.titleAnalysis.sampleTitles ?? []).map((title) => (
                     <div key={title.videoId} className="rounded-lg border p-3 text-sm">

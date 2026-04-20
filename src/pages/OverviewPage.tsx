@@ -144,9 +144,8 @@ export default function OverviewPage() {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+        <CardHeader>
           <CardTitle>Views Over Time</CardTitle>
-          <DateRangeSelector value={globalTimeframeDays} onChange={setGlobalTimeframeDays} />
         </CardHeader>
         <CardContent className="h-[300px]">
           <Suspense fallback={<ChartFallback />}>
@@ -161,6 +160,7 @@ export default function OverviewPage() {
               ]}
               loading={isLoading}
               title=""
+              ariaLabel={`Views over time, ${timeframeLabel}`}
             />
           </Suspense>
         </CardContent>
@@ -168,9 +168,8 @@ export default function OverviewPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardHeader>
             <CardTitle>Watch Time Over Time</CardTitle>
-            <DateRangeSelector value={globalTimeframeDays} onChange={setGlobalTimeframeDays} />
           </CardHeader>
           <CardContent className="h-[300px]">
             <Suspense fallback={<ChartFallback />}>
@@ -185,15 +184,15 @@ export default function OverviewPage() {
                 ]}
                 loading={isLoading}
                 title=""
+                ariaLabel={`Watch time over time, ${timeframeLabel}`}
               />
             </Suspense>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardHeader>
             <CardTitle>Subscribers Over Time</CardTitle>
-            <DateRangeSelector value={globalTimeframeDays} onChange={setGlobalTimeframeDays} />
           </CardHeader>
           <CardContent className="h-[300px]">
             <Suspense fallback={<ChartFallback />}>
@@ -208,6 +207,7 @@ export default function OverviewPage() {
                 ]}
                 loading={isLoading}
                 title=""
+                ariaLabel={`Net subscribers over time, ${timeframeLabel}`}
               />
             </Suspense>
           </CardContent>

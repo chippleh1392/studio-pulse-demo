@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Lock, Sparkles, Workflow } from 'lucide-react'
+import { ArrowRight, Lock, Sparkles, Workflow, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -121,7 +121,7 @@ function PrimerStat({
   label,
   value,
 }: {
-  icon: typeof BookOpen
+  icon: LucideIcon
   label: string
   value: string
 }) {

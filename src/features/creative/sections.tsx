@@ -215,6 +215,8 @@ export function CreativeVideosSection({
               onChange={(event) => onVideoSearchChange(event.target.value)}
               placeholder="Search title, id, theme, thumbnail"
               className="h-8 w-72"
+              aria-label="Search creative videos"
+              type="search"
             />
             <Button variant="outline" className="h-8" onClick={onExportCsv}>
               <Download className="mr-2 h-4 w-4" />
@@ -237,15 +239,15 @@ export function CreativeVideosSection({
               <table className="min-w-[1180px] w-full text-sm">
                 <thead className="bg-muted/40">
                   <tr className="text-xs text-muted-foreground">
-                    <th className="px-3 py-2 text-left">Video</th>
-                    <th className="px-3 py-2 text-left">Theme</th>
-                    <th className="px-3 py-2 text-left">Thumbnail</th>
-                    <th className="px-3 py-2 text-right">Views</th>
-                    <th className="px-3 py-2 text-right">Impressions</th>
-                    <th className="px-3 py-2 text-right">CTR</th>
-                    <th className="px-3 py-2 text-right">AVD</th>
-                    <th className="px-3 py-2 text-right">AVP</th>
-                    <th className="px-3 py-2 text-right">Engagement</th>
+                    <th scope="col" className="px-3 py-2 text-left">Video</th>
+                    <th scope="col" className="px-3 py-2 text-left">Theme</th>
+                    <th scope="col" className="px-3 py-2 text-left">Thumbnail</th>
+                    <th scope="col" className="px-3 py-2 text-right">Views</th>
+                    <th scope="col" className="px-3 py-2 text-right">Impressions</th>
+                    <th scope="col" className="px-3 py-2 text-right">CTR</th>
+                    <th scope="col" className="px-3 py-2 text-right">AVD</th>
+                    <th scope="col" className="px-3 py-2 text-right">AVP</th>
+                    <th scope="col" className="px-3 py-2 text-right">Engagement</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -305,10 +307,10 @@ export function CreativeGroupDetailSheet({
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-background">
                   <tr className="border-b text-xs text-muted-foreground">
-                    <th className="px-3 py-2 text-left">Video</th>
-                    <th className="px-3 py-2 text-right">Views</th>
-                    <th className="px-3 py-2 text-right">CTR</th>
-                    <th className="px-3 py-2 text-right">AVD</th>
+                    <th scope="col" className="px-3 py-2 text-left">Video</th>
+                    <th scope="col" className="px-3 py-2 text-right">Views</th>
+                    <th scope="col" className="px-3 py-2 text-right">CTR</th>
+                    <th scope="col" className="px-3 py-2 text-right">AVD</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -398,6 +400,8 @@ function CreativeGroupCard({
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder={searchPlaceholder}
             className="h-8 w-48"
+            aria-label={searchPlaceholder}
+            type="search"
           />
         </div>
       </CardHeader>
@@ -405,9 +409,21 @@ function CreativeGroupCard({
         {isLoading ? (
           Array.from({ length: 6 }).map((_, idx) => <Skeleton key={idx} className="h-12 w-full" />)
         ) : (
-          items.map((item) => (
-            <GroupRow key={`${rowPrefix}-${item.key}`} item={item} onOpen={() => onOpen(item.key)} />
-          ))
+          <>
+            <div
+              aria-hidden="true"
+              className="grid grid-cols-[1.2fr_80px_90px_80px_80px] gap-3 px-3 pb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground"
+            >
+              <span>Group</span>
+              <span className="text-right">Avg Views</span>
+              <span className="text-right">Avg CTR</span>
+              <span className="text-right">Avg AVD</span>
+              <span className="text-right">Score</span>
+            </div>
+            {items.map((item) => (
+              <GroupRow key={`${rowPrefix}-${item.key}`} item={item} onOpen={() => onOpen(item.key)} />
+            ))}
+          </>
         )}
       </CardContent>
     </Card>
@@ -428,20 +444,22 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
 }
 
 function GroupRow({ item, onOpen }: { item: CreativeGroup; onOpen: () => void }) {
+  const rowLabel = `${item.key}, ${item.videoCount} videos, avg views ${formatNumber(item.avgViews)}, avg CTR ${item.avgCtr.toFixed(2)}%, avg AVD ${formatDuration(item.avgAvdSeconds)}, score ${item.successScore.toFixed(0)}`
   return (
     <button
       type="button"
       onClick={onOpen}
-      className="grid w-full grid-cols-[1.2fr_80px_90px_80px_80px] gap-3 rounded-lg border p-3 text-left hover:bg-muted/40"
+      aria-label={rowLabel}
+      className="grid w-full grid-cols-[1.2fr_80px_90px_80px_80px] gap-3 rounded-lg border p-3 text-left hover:bg-muted/40 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
     >
       <div className="min-w-0">
         <div className="truncate font-medium">{item.key}</div>
         <div className="text-xs text-muted-foreground">{item.videoCount} videos</div>
       </div>
-      <div className="text-right text-sm text-muted-foreground">{formatNumber(item.avgViews)}</div>
-      <div className="text-right text-sm text-muted-foreground">{item.avgCtr.toFixed(2)}%</div>
-      <div className="text-right text-sm text-muted-foreground">{formatDuration(item.avgAvdSeconds)}</div>
-      <div className="text-right text-sm font-medium">{item.successScore.toFixed(0)}</div>
+      <div className="text-right text-sm tabular-nums text-muted-foreground">{formatNumber(item.avgViews)}</div>
+      <div className="text-right text-sm tabular-nums text-muted-foreground">{item.avgCtr.toFixed(2)}%</div>
+      <div className="text-right text-sm tabular-nums text-muted-foreground">{formatDuration(item.avgAvdSeconds)}</div>
+      <div className="text-right text-sm font-medium tabular-nums">{item.successScore.toFixed(0)}</div>
     </button>
   )
 }

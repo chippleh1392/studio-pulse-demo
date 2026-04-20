@@ -145,6 +145,12 @@ export default function VideosPage() {
   const getAriaSort = (columnKey: SortKey): 'ascending' | 'descending' | 'none' =>
     sortKey === columnKey ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'
 
+  const getSortLabel = (columnKey: SortKey, columnLabel: string) => {
+    if (sortKey !== columnKey) return `Sort by ${columnLabel}`
+    const next = sortDirection === 'asc' ? 'descending' : 'ascending'
+    return `Sort by ${columnLabel}, currently ${sortDirection === 'asc' ? 'ascending' : 'descending'}; activate for ${next}`
+  }
+
   const hasActiveFilters = videoTypeFilter !== 'all' || Boolean(searchQuery)
 
   return (
@@ -185,16 +191,18 @@ export default function VideosPage() {
                   onChange={(event) => setSearchInput(event.target.value)}
                   placeholder="Search titles, themes, formats..."
                   className="h-9 w-64 pl-9"
+                  aria-label="Search videos"
+                  type="search"
                 />
               </div>
-              <div className="flex items-center rounded-md border text-sm">
+              <div role="group" aria-label="Video type" className="flex items-center rounded-md border text-sm">
                 {(['all', 'videos', 'live'] as VideoTypeFilter[]).map((type) => (
                   <button
                     key={type}
                     type="button"
                     onClick={() => setVideoTypeFilter(type)}
                     aria-pressed={videoTypeFilter === type}
-                    className={`px-3 py-2 capitalize ${
+                    className={`px-3 py-2 capitalize focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 ${
                       videoTypeFilter === type ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
                     }`}
                   >
@@ -228,6 +236,7 @@ export default function VideosPage() {
                     type="button"
                     onClick={() => setVideoTypeFilter('all')}
                     aria-label={`Remove ${videoTypeFilter === 'videos' ? 'VOD only' : 'Live only'} filter`}
+                    className="inline-flex h-5 w-5 items-center justify-center rounded hover:bg-primary/20 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -243,6 +252,7 @@ export default function VideosPage() {
                       setSearchQuery('')
                     }}
                     aria-label="Clear search filter"
+                    className="inline-flex h-5 w-5 items-center justify-center rounded hover:bg-primary/20 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -283,32 +293,62 @@ export default function VideosPage() {
                     Title
                   </th>
                   <th scope="col" aria-sort={getAriaSort('publishedAt')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('publishedAt')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('publishedAt')}
+                      aria-label={getSortLabel('publishedAt', 'published date')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       Published{getSortIcon('publishedAt')}
                     </button>
                   </th>
                   <th scope="col" aria-sort={getAriaSort('views')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('views')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('views')}
+                      aria-label={getSortLabel('views', 'views')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       Views{getSortIcon('views')}
                     </button>
                   </th>
                   <th scope="col" aria-sort={getAriaSort('watchHours')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('watchHours')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('watchHours')}
+                      aria-label={getSortLabel('watchHours', 'watch hours')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       Watch Time{getSortIcon('watchHours')}
                     </button>
                   </th>
                   <th scope="col" aria-sort={getAriaSort('ctr')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('ctr')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('ctr')}
+                      aria-label={getSortLabel('ctr', 'click through rate')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       CTR{getSortIcon('ctr')}
                     </button>
                   </th>
                   <th scope="col" aria-sort={getAriaSort('avdSeconds')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('avdSeconds')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('avdSeconds')}
+                      aria-label={getSortLabel('avdSeconds', 'average view duration')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       AVD{getSortIcon('avdSeconds')}
                     </button>
                   </th>
                   <th scope="col" aria-sort={getAriaSort('score')} className="p-4 text-left">
-                    <button type="button" onClick={() => handleSort('score')} className="text-left">
+                    <button
+                      type="button"
+                      onClick={() => handleSort('score')}
+                      aria-label={getSortLabel('score', 'score')}
+                      className="text-left rounded focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60"
+                    >
                       Score{getSortIcon('score')}
                     </button>
                   </th>

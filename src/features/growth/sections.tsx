@@ -32,10 +32,12 @@ export function GrowthSummaryCard({ summaryLines }: { summaryLines: string[] }) 
       <CardHeader className="pb-3">
         <CardTitle className="text-base">What Changed</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-1 text-sm text-muted-foreground">
-        {summaryLines.map((line, index) => (
-          <div key={`summary-line-${index}`}>- {line}</div>
-        ))}
+      <CardContent className="text-sm text-muted-foreground">
+        <ul className="list-disc space-y-1 pl-5 marker:text-muted-foreground/60">
+          {summaryLines.map((line, index) => (
+            <li key={`summary-line-${index}`}>{line}</li>
+          ))}
+        </ul>
       </CardContent>
     </Card>
   )
@@ -158,7 +160,7 @@ export function GrowthCharts({
                 type="button"
                 onClick={() => onWowTimeframeChange(option.value)}
                 aria-pressed={wowTimeframe === option.value}
-                className={`rounded-md px-3 py-1.5 text-xs font-medium ${
+                className={`rounded-md px-3 py-1.5 text-xs font-medium focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 ${
                   wowTimeframe === option.value
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -217,12 +219,14 @@ export function GrowthWeeklyPerformance({
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="w-[6%] py-3 px-1"></th>
-                    <th className="w-[22%] py-3 px-3 text-left font-medium">Week</th>
-                    <th className="w-[18%] py-3 px-3 text-right font-medium">Views</th>
-                    <th className="w-[18%] py-3 px-3 text-right font-medium">WoW</th>
-                    <th className="w-[15%] py-3 px-3 text-center font-medium">Tier</th>
-                    <th className="w-[21%] py-3 px-3 text-right font-medium">Views vs Avg</th>
+                    <th scope="col" className="w-[6%] py-3 px-1">
+                      <span className="sr-only">Indicator</span>
+                    </th>
+                    <th scope="col" className="w-[22%] py-3 px-3 text-left font-medium">Week</th>
+                    <th scope="col" className="w-[18%] py-3 px-3 text-right font-medium">Views</th>
+                    <th scope="col" className="w-[18%] py-3 px-3 text-right font-medium">WoW</th>
+                    <th scope="col" className="w-[15%] py-3 px-3 text-center font-medium">Tier</th>
+                    <th scope="col" className="w-[21%] py-3 px-3 text-right font-medium">Views vs Avg</th>
                   </tr>
                 </thead>
                 <tbody>

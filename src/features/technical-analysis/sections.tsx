@@ -260,7 +260,7 @@ function TogglePill({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition ${
+      className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60 ${
         active ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-600'
       }`}
     >

@@ -200,7 +200,7 @@ function SignalBar({ label, value, icon }: { label: string; value?: number; icon
 
 function ThumbLabel({ text }: { text: string }) {
   return (
-    <div className="flex h-[90px] w-40 items-end rounded-l-lg bg-[linear-gradient(160deg,#d6e7f4_0%,#bfcee7_48%,#b8a9d8_100%)] p-3">
+    <div className="flex h-[90px] w-full items-end rounded-t-lg bg-[linear-gradient(160deg,#d6e7f4_0%,#bfcee7_48%,#b8a9d8_100%)] p-3 md:w-40 md:rounded-l-lg md:rounded-tr-none">
       <span className="rounded bg-white/75 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700">
         {text}
       </span>
@@ -219,14 +219,14 @@ function BreakoutCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         <Link to={inspectHref} className="shrink-0">
           <ThumbLabel text={candidate.title.split(':')[0] || 'Breakout'} />
         </Link>
-        <div className="flex-1 p-4">
-          <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1 p-4">
+          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
             <div className="min-w-0 flex-1">
-              <div className="mb-1 flex items-center gap-2">
+              <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/10 text-xs font-bold text-violet-600">
                   {rank}
                 </span>
@@ -238,10 +238,10 @@ function BreakoutCard({
                   {candidate.topSignal}
                 </span>
               </div>
-              <Link to={inspectHref} className="line-clamp-1 text-sm font-medium text-primary hover:underline">
+              <Link to={inspectHref} className="line-clamp-2 text-sm font-medium text-primary hover:underline">
                 {candidate.title}
               </Link>
-              <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
+              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                 <span>{candidate.views.toLocaleString()} views</span>
                 <span>{candidate.daysSincePublish} days old</span>
                 <span>{candidate.viewsPerDay.toLocaleString()}/day</span>
@@ -250,12 +250,12 @@ function BreakoutCard({
               </div>
               <p className="mt-2 text-xs font-medium text-emerald-600">{candidate.reasoning}</p>
             </div>
-            <Link to={inspectHref} className="shrink-0 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted">
+            <Link to={inspectHref} className="shrink-0 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60">
               Inspect
             </Link>
           </div>
         </div>
-        <div className="w-48 space-y-2 border-l bg-muted/30 p-4">
+        <div className="w-full space-y-2 border-t bg-muted/30 p-4 md:w-48 md:border-t-0 md:border-l">
           <SignalBar label="CTR" value={candidate.signals.ctrSignal} icon={<MousePointer className="h-3 w-3" />} />
           <SignalBar label="Retention" value={candidate.signals.avpSignal} icon={<Eye className="h-3 w-3" />} />
           <SignalBar label="Velocity" value={candidate.signals.velocitySignal} icon={<TrendingUp className="h-3 w-3" />} />
@@ -282,14 +282,14 @@ function ResurgenceCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         <Link to={inspectHref} className="shrink-0">
           <ThumbLabel text={candidate.title.split(':')[0] || 'Catalog'} />
         </Link>
-        <div className="flex-1 p-4">
-          <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1 p-4">
+          <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
             <div className="min-w-0 flex-1">
-              <div className="mb-1 flex items-center gap-2">
+              <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/10 text-xs font-bold text-amber-600">
                   {rank}
                 </span>
@@ -300,10 +300,10 @@ function ResurgenceCard({
                   {candidate.surgeFactor.toFixed(1)}x surge
                 </span>
               </div>
-              <Link to={inspectHref} className="line-clamp-1 text-sm font-medium text-primary hover:underline">
+              <Link to={inspectHref} className="line-clamp-2 text-sm font-medium text-primary hover:underline">
                 {candidate.title}
               </Link>
-              <div className="mt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                 <span>{candidate.views.toLocaleString()} total views</span>
                 <span>{candidate.daysSincePublish} days old</span>
                 <span>{candidate.recentViews.toLocaleString()} in last {recentWindowDays}d</span>
@@ -312,21 +312,21 @@ function ResurgenceCard({
               </div>
               <p className="mt-2 text-xs font-medium text-amber-600">{candidate.reasoning}</p>
             </div>
-            <Link to={inspectHref} className="shrink-0 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted">
+            <Link to={inspectHref} className="shrink-0 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/60">
               Inspect
             </Link>
           </div>
         </div>
-        <div className="w-48 border-l bg-muted/30 p-4">
+        <div className="grid w-full grid-cols-3 gap-3 border-t bg-muted/30 p-4 md:block md:w-48 md:border-t-0 md:border-l">
           <div>
             <div className="text-xs text-muted-foreground">Recent {recentWindowDays}d</div>
             <div className="text-sm font-semibold">{candidate.recentViews.toLocaleString()}</div>
           </div>
-          <div className="mt-3">
+          <div className="md:mt-3">
             <div className="text-xs text-muted-foreground">Prior {baselineWindowDays}d</div>
             <div className="text-sm font-medium">{candidate.priorViews.toLocaleString()}</div>
           </div>
-          <div className="mt-3">
+          <div className="md:mt-3">
             <div className="text-xs text-muted-foreground">Surge factor</div>
             <div className="text-sm font-medium">{candidate.surgeFactor.toFixed(1)}x</div>
           </div>

@@ -23,23 +23,36 @@ type DateRangeSelectorProps = {
 
 export function DateRangeSelector({ value, onChange, className }: DateRangeSelectorProps) {
   return (
-    <div className={cn('flex gap-1', className)}>
-      {DATE_RANGE_OPTIONS.map((option) => (
-        <Button
-          key={option.label}
-          variant="ghost"
-          size="sm"
-          onClick={() => onChange(option.days)}
-          className={cn(
-            'h-6 rounded-full px-2.5 text-xs font-semibold border transition-colors',
-            value === option.days
-              ? 'border-primary/35 bg-primary/18 text-primary hover:bg-primary/22'
-              : 'border-transparent text-muted-foreground hover:border-border hover:bg-accent/65 hover:text-accent-foreground'
-          )}
-        >
-          {option.label}
-        </Button>
-      ))}
+    <div
+      role="group"
+      aria-label="Timeframe"
+      className={cn('flex flex-wrap gap-1', className)}
+    >
+      {DATE_RANGE_OPTIONS.map((option) => {
+        const isActive = value === option.days
+        return (
+          <Button
+            key={option.label}
+            variant="ghost"
+            size="sm"
+            onClick={() => onChange(option.days)}
+            aria-pressed={isActive}
+            aria-label={
+              option.days === undefined
+                ? 'Show lifetime timeframe'
+                : `Show last ${option.days} days`
+            }
+            className={cn(
+              'h-6 rounded-full px-2.5 text-xs font-semibold border transition-colors',
+              isActive
+                ? 'border-primary/35 bg-primary/18 text-primary hover:bg-primary/22'
+                : 'border-transparent text-muted-foreground hover:border-border hover:bg-accent/65 hover:text-accent-foreground'
+            )}
+          >
+            {option.label}
+          </Button>
+        )
+      })}
     </div>
   )
 }

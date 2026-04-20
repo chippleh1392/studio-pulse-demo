@@ -166,43 +166,60 @@ export default function MetadataPage() {
             <div className="text-sm text-muted-foreground">No videos matched this filter.</div>
           ) : (
             <div className="overflow-x-auto rounded-lg border">
-              <div className="min-w-[980px] divide-y">
-                <div className="grid grid-cols-[1.7fr_120px_120px_90px_120px_1fr] gap-3 bg-muted/50 p-3 text-xs uppercase tracking-wide text-muted-foreground">
-                  <div>Video</div>
-                  <div>Meta Score</div>
-                  <div>Alignment</div>
-                  <div>Tags</div>
-                  <div>Creative</div>
-                  <div>Issues</div>
-                </div>
-                {visibleVideos.map((video) => (
-                  <div key={video.videoId} className="grid grid-cols-[1.7fr_120px_120px_90px_120px_1fr] gap-3 items-start p-3 text-sm">
-                    <div className="space-y-1">
-                      <div className="font-medium">{video.title}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {video.publishedAt} · {video.views.toLocaleString()} views
-                      </div>
-                    </div>
-                    <div className={`font-semibold ${scoreClass(video.metadataScore)}`}>{video.metadataScore.toFixed(1)}</div>
-                    <div className={`font-semibold ${scoreClass(video.nicheAlignmentScore)}`}>{video.nicheAlignmentScore.toFixed(1)}</div>
-                    <div>{video.tagCount}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {video.theme ? 'theme' : 'no theme'} / {video.thumbnailText ? 'thumb text' : 'no thumb text'}
-                    </div>
-                    <div className="flex flex-wrap gap-1">
-                      {video.issues.length ? (
-                        video.issues.map((issue) => (
-                          <span key={`${video.videoId}-${issue.code}`} className={`rounded border px-2 py-0.5 text-[11px] ${severityClass(issue.severity)}`}>
-                            {issue.code}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-xs text-emerald-700">clean</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <table className="w-full min-w-[980px] text-sm">
+                <caption className="sr-only">Video metadata audit</caption>
+                <colgroup>
+                  <col />
+                  <col className="w-[120px]" />
+                  <col className="w-[120px]" />
+                  <col className="w-[90px]" />
+                  <col className="w-[120px]" />
+                  <col />
+                </colgroup>
+                <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th scope="col" className="p-3 text-left font-normal">Video</th>
+                    <th scope="col" className="p-3 text-left font-normal">Meta Score</th>
+                    <th scope="col" className="p-3 text-left font-normal">Alignment</th>
+                    <th scope="col" className="p-3 text-left font-normal">Tags</th>
+                    <th scope="col" className="p-3 text-left font-normal">Creative</th>
+                    <th scope="col" className="p-3 text-left font-normal">Issues</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {visibleVideos.map((video) => (
+                    <tr key={video.videoId} className="align-top">
+                      <td className="p-3">
+                        <div className="space-y-1">
+                          <div className="font-medium">{video.title}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {video.publishedAt} · {video.views.toLocaleString()} views
+                          </div>
+                        </div>
+                      </td>
+                      <td className={`p-3 font-semibold ${scoreClass(video.metadataScore)}`}>{video.metadataScore.toFixed(1)}</td>
+                      <td className={`p-3 font-semibold ${scoreClass(video.nicheAlignmentScore)}`}>{video.nicheAlignmentScore.toFixed(1)}</td>
+                      <td className="p-3">{video.tagCount}</td>
+                      <td className="p-3 text-xs text-muted-foreground">
+                        {video.theme ? 'theme' : 'no theme'} / {video.thumbnailText ? 'thumb text' : 'no thumb text'}
+                      </td>
+                      <td className="p-3">
+                        <div className="flex flex-wrap gap-1">
+                          {video.issues.length ? (
+                            video.issues.map((issue) => (
+                              <span key={`${video.videoId}-${issue.code}`} className={`rounded border px-2 py-0.5 text-[11px] ${severityClass(issue.severity)}`}>
+                                {issue.code}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-xs text-emerald-700">clean</span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </CardContent>
